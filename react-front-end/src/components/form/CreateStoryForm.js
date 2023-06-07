@@ -10,7 +10,6 @@ export const CreateStoryForm = () => {
       //! Image field left out for now to plan out implementation details further
       initialValues={{
         title: "placeholder for title",
-        // content: "placeholder for content",
         editorState: EditorState.createEmpty(), // Initialize the editor state (this state holds the story content)
       }}
       validationSchema={Yup.object({
