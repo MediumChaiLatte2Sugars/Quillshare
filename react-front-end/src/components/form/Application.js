@@ -8,8 +8,8 @@ export default function Application() {
 
   return(
     <>
-      // Test each form by uncommenting the desired form
-      {/* <CreateStoryForm /> */}
+      {/*  Test each form by uncommenting the desired form */}
+      <CreateStoryForm />
       {/* < EditProfileForm /> */}
       {/* <PublishForm categories={[
         { value: 'cateogry 1', label: 'Cateogry 1' },
