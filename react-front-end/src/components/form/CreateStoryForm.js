@@ -1,7 +1,8 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { EditorState } from 'draft-js';
+import { EditorState } from "draft-js";
 import * as Yup from "yup";
+import axios from 'axios';
 import MyEditor from "./MyEditor";
 
 export const CreateStoryForm = () => {
@@ -17,11 +18,24 @@ export const CreateStoryForm = () => {
           .max(100, "Must be 100 characters or less")
           .required("Required"),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          // Make a POST request to /api/stories
+          const response = await axios.post("/api/stories", values);
+
+          // Handle the response as needed
+          console.log(response.data);
+          alert("Story submitted successfully!");
+
+        } catch (error) {
+
+          // Handle errors
+          console.error(error);
+          alert("An error occurred while submitting the story.");
+        }
+
+        // Reset form submission state
+        setSubmitting(false);
       }}
     >
       {({ values, setFieldValue, handleBlur }) => (
@@ -33,8 +47,8 @@ export const CreateStoryForm = () => {
           <label htmlFor="content">Content</label>
           <MyEditor
             editorState={values.editorState}
-            onChange={(editorState) =>
-              setFieldValue("editorState", editorState) // Update the editor state
+            onChange={
+              (editorState) => setFieldValue("editorState", editorState) // Update the editor state
             }
             onBlur={handleBlur}
           />
