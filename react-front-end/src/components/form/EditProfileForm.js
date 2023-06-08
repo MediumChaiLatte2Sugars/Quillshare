@@ -47,6 +47,10 @@ export const EditProfileForm = () => {
       onSubmit={handleSubmit}
     >
       <Form>
+        <label htmlFor="photo">[photo icon goes here]</label>
+        <Field name="photo" type="file" accept="image/*"/>
+        <ErrorMessage name="photo" />
+
         <label htmlFor="username">Username</label>
         <Field name="username" type="text" />
         <CharacterCount fieldName="username" maxLength={50} />
