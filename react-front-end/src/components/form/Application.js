@@ -1,22 +1,26 @@
-import React from 'react';
+import React from "react";
 // import '../../MyEditor.css';
-import { CreateStoryForm } from './CreateStoryForm';
-import { EditProfileForm } from './EditProfileForm';
-import { PublishForm } from './PublishForm';
+import { CreateStoryForm } from "./CreateStoryForm";
+import { EditProfileForm } from "./EditProfileForm";
+import { PublishSettingsForm } from "./PublishSettingsForm";
+import { PublishForm } from "./PublishForm";
 
 export default function Application() {
-
-  return(
+  return (
     <>
       {/*  Test each form by uncommenting the desired form */}
-      <CreateStoryForm />
+      {/* <CreateStoryForm /> */}
+      <PublishForm categories={[
+        { value: 'cateogry 1', label: 'Cateogry 1' },
+        { value: 'category 2', label: 'Category 2' },
+        { value: 'category 3', label: 'Category 3' },
+      ]}/>
       {/* < EditProfileForm /> */}
-      {/* <PublishForm categories={[
+      {/* <PublishSettingsForm categories={[
         { value: 'cateogry 1', label: 'Cateogry 1' },
         { value: 'category 2', label: 'Category 2' },
         { value: 'category 3', label: 'Category 3' },
       ]}/> */}
     </>
-    )
-
+  );
 }

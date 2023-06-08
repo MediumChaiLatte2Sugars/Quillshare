@@ -1,86 +1,50 @@
-import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import axios from 'axios';
-import * as Yup from "yup";
+import React, { useState, useEffect } from "react";
+import { PublishSettingsForm } from "./PublishSettingsForm";
+import { CreateStoryForm } from "./CreateStoryForm";
+import axios from "axios";
 
 export const PublishForm = (props) => {
-  const initialValues = {
-    title: "Title",
-    category: props.categories[0].value,
-    tags: "",
-    visibility: "public",
-  };
+  const [publishSettingsFormValues, setPublishSettingsFormValues] = useState(null);
+  const [createStoryFormValues, setCreateStoryFormValues] = useState(null);
 
-  const validationSchema = Yup.object({
-    title: Yup.string()
-      .max(100, "Must be 100 characters or less")
-      .required("Required"),
-    tags: Yup.string()
-      .required("You need to specify at least 1 tag"),
-    category: Yup.string().required("Required"),
-    visibility: Yup.string().required("Required"),
-  });
+  useEffect(() => {
+    if (publishSettingsFormValues && createStoryFormValues) {
+      handleSubmit();
+    }
+  }, [publishSettingsFormValues, createStoryFormValues]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async () => {
     try {
-      // Make a POST request to /api/stories
-      const response = await axios.post("/api/stories", values);
+      // Make a POST request to /api/stories with the combined form values
+      const combinedValues = {
+        ...publishSettingsFormValues,
+        ...createStoryFormValues,
+      };
+      const response = await axios.post("/api/stories", combinedValues);
 
       // Handle the response as needed
       console.log(response.data);
-      alert("Story published successfully!");
-
+      alert("Story submitted successfully!");
     } catch (error) {
-
       // Handle errors
       console.error(error);
-      alert("An error occurred while publishing the story.");
+      alert("An error occurred while submitting the story.");
     }
-
-    // Reset form submission state
-    setSubmitting(false);
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      <Form>
-        <label htmlFor="title">Title</label>
-        <Field name="title" type="text" />
-        <ErrorMessage name="title" component="div" />
-
-        <label htmlFor="category">Category</label>
-        <Field name="category" as="select" component={SelectField} options={props.categories} />
-        <ErrorMessage name="category" component="div" />
-
-        <label htmlFor="tags">Tags</label>
-        <Field name="tags" type="text" />
-        <ErrorMessage name="tags" component="div" />
-
-        <label htmlFor="visibility">Visibility</label>
-        <Field name="visibility" as="select">
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </Field>
-        <ErrorMessage name="visibility" component="div" />
-
-        <button type="button">Cancel</button>
-        <button type="submit">Publish</button>
-      </Form>
-    </Formik>
+    <div>
+      <CreateStoryForm
+        onSubmit={(values) => {
+          setCreateStoryFormValues(values);
+        }}
+      />
+      <PublishSettingsForm
+        onSubmit={(values) => {
+          setPublishSettingsFormValues(values);
+        }}
+        categories={props.categories}
+      />
+    </div>
   );
 };
-
-// Dynamically create the category options for the category select field
-const SelectField = ({ field, form, options }) => (
-  <select {...field}>
-    {options.map((option) => (
-      <option key={option.value} value={option.value}>
-        {option.label}
-      </option>
-    ))}
-  </select>
-);
