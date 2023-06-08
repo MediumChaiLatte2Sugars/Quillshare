@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import axios from 'axios';
 import * as Yup from "yup";
 
 export const PublishForm = (props) => {
@@ -20,11 +21,24 @@ export const PublishForm = (props) => {
     visibility: Yup.string().required("Required"),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      // Make a POST request to /api/stories
+      const response = await axios.post("/api/stories", values);
+
+      // Handle the response as needed
+      console.log(response.data);
+      alert("Story published successfully!");
+
+    } catch (error) {
+
+      // Handle errors
+      console.error(error);
+      alert("An error occurred while publishing the story.");
+    }
+
+    // Reset form submission state
+    setSubmitting(false);
   };
 
   return (
