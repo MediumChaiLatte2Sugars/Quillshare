@@ -10,12 +10,12 @@ export default function Application() {
     <>
       {/*  Test each form by uncommenting the desired form */}
       {/* <CreateStoryForm /> */}
-      <PublishForm categories={[
+      {/* <PublishForm categories={[
         { value: 'cateogry 1', label: 'Cateogry 1' },
         { value: 'category 2', label: 'Category 2' },
         { value: 'category 3', label: 'Category 3' },
-      ]}/>
-      {/* < EditProfileForm /> */}
+      ]}/> */}
+      < EditProfileForm />
       {/* <PublishSettingsForm categories={[
         { value: 'cateogry 1', label: 'Cateogry 1' },
         { value: 'category 2', label: 'Category 2' },
