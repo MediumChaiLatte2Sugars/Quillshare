@@ -1,10 +1,20 @@
 import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-export const EditProfileForm = () => {
+const CharacterCount = ({ fieldName, maxLength }) => {
+  const { values } = useFormikContext();
+  const count = values[fieldName].length;
 
+  return (
+    <label>
+      {count}/{maxLength}
+    </label>
+  );
+};
+
+export const EditProfileForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await axios.put("/api/users/1", values); //! test id of the first user
@@ -36,28 +46,20 @@ export const EditProfileForm = () => {
       })}
       onSubmit={handleSubmit}
     >
-      {({ values }) => (
-        <Form>
-          <label htmlFor="username">Username</label>
-          <Field
-            name="username"
-            type="text"
-          />
-          <label htmlFor='username'>{values.username.length}/50</label>
-          <ErrorMessage name="username" />
+      <Form>
+        <label htmlFor="username">Username</label>
+        <Field name="username" type="text" />
+        <CharacterCount fieldName="username" maxLength={50} />
+        <ErrorMessage name="username" />
 
-          <label htmlFor="bio">Bio</label>
-          <Field
-            name="bio"
-            type="text"
-          />
-          <label htmlFor="bio">{values.bio.length}/100</label>
-          <ErrorMessage name="bio" />
+        <label htmlFor="bio">Bio</label>
+        <Field name="bio" type="text" />
+        <CharacterCount fieldName="bio" maxLength={100} />
+        <ErrorMessage name="bio" />
 
-          <button type="button">Cancel</button>
-          <button type="submit">Save</button>
-        </Form>
-      )}
+        <button type="button">Cancel</button>
+        <button type="submit">Save</button>
+      </Form>
     </Formik>
   );
 };
