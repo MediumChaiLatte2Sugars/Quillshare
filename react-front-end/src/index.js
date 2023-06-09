@@ -13,7 +13,8 @@ ReactDOM.render(<Auth0Provider
     redirect_uri: window.location.origin
   }}
 >
-  < Application />
+  {/* <App /> auth0  */}
+  <Application /> {/* Forms */}
 </Auth0Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
