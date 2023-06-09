@@ -1,6 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
-const { Users, Stories, SavedStories } = require("../models");
+const { Users, Stories, SavedStories, Subscriptions } = require("../models");
 
 // Handle user login  ---- /api/users/login/:id
 router.get("/login/:id", (req, res) => {
@@ -30,11 +30,20 @@ router.get('/', (req, res) => {
 // GET a user by id ---- /api/users/:id
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  Users.findById(id)
-    .then((user) => {
-      res.send(user);
+  // Users.findById(id)
+    // .then((user) => {
+      // res.send(user);
+    // })
+    // .catch((err) => console.log("err:", err));
+    Subscriptions.findAll()
+    .then(users => {
+      const data = {
+        users,
+        message: 'Get all user'
+      }
+      res.send(data)
     })
-    .catch((err) => console.log("err:", err));
+    .catch((err) => console.log('err:', err))
 });
 
 // GET stories of a user by id ---- /api/users/:id/stories
