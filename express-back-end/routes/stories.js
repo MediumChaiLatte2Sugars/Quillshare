@@ -1,6 +1,6 @@
 const Express = require('express');
 const router = Express.Router();
-const { Stories, StoryCategories } = require('../models')
+const { Stories, StoryCategories, Comments, Likes } = require('../models')
 
 // GET all stories ------ /api/stories
 router.get('/', (req, res) => {
@@ -18,12 +18,21 @@ router.get('/', (req, res) => {
 // GET a single story by id ------ /api/stories/:id
 router.get('/:id', (req, res) => {
   const storyId = req.params.id;
-  Stories.findById(storyId)
-    .then((story) => {
-      console.log(story);
-      res.send(story);
+  // Stories.findById(storyId)
+  //   .then((story) => {
+  //     console.log(story);
+  //     res.send(story);
+  //   })
+  //   .catch((err) => console.log('err:', err));
+  Likes.findAll()
+    .then(story => {
+      const data = {
+        story,
+        message: 'Get all story'
+      }
+      res.send(data)
     })
-    .catch((err) => console.log('err:', err));
+    .catch((err) => console.log('err:', err))
 });
 
 // UPDATE a story by id -----  /api/stories/:id
