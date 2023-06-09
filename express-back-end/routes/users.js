@@ -1,6 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
-const { Users, Stories, SavedStories, Subscriptions } = require("../models");
+const { Users, Stories, SavedStories, Subscriptions, Comments } = require("../models");
 
 // Handle user login  ---- /api/users/login/:id
 router.get("/login/:id", (req, res) => {
@@ -35,7 +35,7 @@ router.get("/:id", (req, res) => {
       // res.send(user);
     // })
     // .catch((err) => console.log("err:", err));
-    Subscriptions.findAll()
+    Comments.findAll()
     .then(users => {
       const data = {
         users,

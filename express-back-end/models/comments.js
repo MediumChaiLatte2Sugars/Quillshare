@@ -1,15 +1,13 @@
 const createModel = require('../helpers/model-helper')
 
-const name = 'Subscriptions'
-const tableName = 'subscriptions'
+const name = 'Comments'
+const tableName = 'comments'
 
 const selectableProps = [
   'id',
-  'user1',
-  'user2',
-  'category_id',
-  'tags_id',
+  'user_id',
   'story_id',
+  'content',
   'created_at'
 ]
 
