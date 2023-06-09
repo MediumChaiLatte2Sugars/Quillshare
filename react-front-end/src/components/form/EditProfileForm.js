@@ -1,11 +1,19 @@
 import React from "react";
-import { Formik, Field, Form, ErrorMessage, useFormikContext } from "formik";
+import {
+  Formik,
+  Field,
+  Form,
+  ErrorMessage,
+  useFormikContext,
+  useField,
+} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import PhotoInput from "./PhotoInput";
 
 const CharacterCount = ({ fieldName, maxLength }) => {
-  const { values } = useFormikContext();
-  const count = values[fieldName].length;
+  const [field] = useField(fieldName);
+  const count = field.value.length;
 
   return (
     <label>
@@ -14,9 +22,51 @@ const CharacterCount = ({ fieldName, maxLength }) => {
   );
 };
 
+// Custom validation function for photo dimensions
+const validatePhotoDimensions = (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = function () {
+      const { width, height } = this;
+
+      if (width > 100 || height > 100) {
+        reject();
+      } else {
+        resolve();
+      }
+    };
+
+    img.onerror = function () {
+      reject("Invalid photo.");
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
+};
+
+const validationSchema = Yup.object({
+  photo: Yup.mixed()
+    .required("Photo is required"),
+    // .test(
+    //   "file-dimensions",
+    //   "Photo dimensions should be no more than 100x100 pixels.",
+    //   function (value) {
+    //     return validatePhotoDimensions(value).catch(() => false);
+    //   }
+    // ),
+  username: Yup.string()
+    .max(50, "Must be 50 characters or less")
+    .required("Required"),
+  bio: Yup.string()
+    .max(100, "Must be 100 characters or less")
+    .required("Required"),
+});
+
 export const EditProfileForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+
       const response = await axios.put("/api/users/1", values); //! test id of the first user
 
       // Handle the response as needed
@@ -34,21 +84,13 @@ export const EditProfileForm = () => {
 
   return (
     <Formik
-      //! Image field left out for now to plan out implementation details further
-      initialValues={{ username: "", bio: "" }}
-      validationSchema={Yup.object({
-        username: Yup.string()
-          .max(50, "Must be 50 characters or less")
-          .required("Required"),
-        bio: Yup.string()
-          .max(100, "Must be 100 characters or less")
-          .required("Required"),
-      })}
+      initialValues={{ photo: null, username: "", bio: "" }}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <Form>
         <label htmlFor="photo">[photo icon goes here]</label>
-        <Field name="photo" type="file" accept="image/*"/>
+        <PhotoInput name="photo" />
         <ErrorMessage name="photo" />
 
         <label htmlFor="username">Username</label>
