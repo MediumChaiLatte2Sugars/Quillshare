@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
 import './index.css';
-import App from './App';
+import './MyEditor.css';
+import Application from './components/form/Application';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Auth0Provider
@@ -12,7 +13,7 @@ ReactDOM.render(<Auth0Provider
     redirect_uri: window.location.origin
   }}
 >
-  <App />
+  < Application />
 </Auth0Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
