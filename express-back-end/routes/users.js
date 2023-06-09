@@ -65,6 +65,8 @@ router.get("/:id/saved-stories", (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+
+// Save a new story to a user's saved stories ---- /api/users/:id/saved-stories
 router.post("/:id/saved-stories", (req, res) => {
   const props = req.body
   SavedStories.create(props )
@@ -73,6 +75,10 @@ router.post("/:id/saved-stories", (req, res) => {
     })
     .catch((err) => console.log("err:", err));
 });
+
+
+
+
 
 router.put("/:userId/saved-stories/:id", (req, res) => {
   const id = req.params.id;
@@ -105,15 +111,6 @@ router.post('/', (req, res) => {
         user
       }))
     .catch((err) => console.log('err:', err))
-});
-
-// DELETE a user by id
-router.delete("/:id", (req, res) => {
-  const userId = req.params.id;
-
-  Users.destroy(userId)
-    .then((users) => res.send(users))
-    .catch((err) => console.log("err:", err));
 });
 
 module.exports = router;
