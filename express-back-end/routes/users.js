@@ -30,20 +30,11 @@ router.get('/', (req, res) => {
 // GET a user by id ---- /api/users/:id
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  // Users.findById(id)
-    // .then((user) => {
-      // res.send(user);
-    // })
-    // .catch((err) => console.log("err:", err));
-    Subscriptions.findAll()
-    .then(users => {
-      const data = {
-        users,
-        message: 'Get all user'
-      }
-      res.send(data)
+  Users.findById(id)
+    .then((user) => {
+      res.send(user);
     })
-    .catch((err) => console.log('err:', err))
+    .catch((err) => console.log("err:", err));
 });
 
 // GET stories of a user by id ---- /api/users/:id/stories
@@ -56,6 +47,8 @@ router.get("/:id/stories", (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+
+// GET all saved stories of a user by id ---- /api/users/:id/saved-stories
 router.get("/:id/saved-stories", (req, res) => {
   const userId = req.params.id;
   SavedStories.getAllSavedStoriesbyUserId(userId )
@@ -66,7 +59,7 @@ router.get("/:id/saved-stories", (req, res) => {
 });
 
 
-// Save a new story to a user's saved stories ---- /api/users/:id/saved-stories
+// POST a new story to a user's saved stories ---- /api/users/:id/saved-stories
 router.post("/:id/saved-stories", (req, res) => {
   const props = req.body
   SavedStories.create(props )
@@ -78,8 +71,7 @@ router.post("/:id/saved-stories", (req, res) => {
 
 
 
-
-
+// UPDATE a user's saved story by id  ---- /api/users/:userId/saved-stories/:id
 router.put("/:userId/saved-stories/:id", (req, res) => {
   const id = req.params.id;
   const props = req.body.user
@@ -103,6 +95,7 @@ router.put('/:id', (req, res) => {
 
 // POST a new user  ---- /api/users
 router.post('/', (req, res) => {
+  console.log(req.body)
   const props = req.body
   Users.create(props)
     .then(user => res.json({
@@ -110,6 +103,14 @@ router.post('/', (req, res) => {
         message: 'User created',
         user
       }))
+    .catch((err) => console.log('err:', err))
+});
+
+// DELETE a user by id  ---- /api/users/:id
+router.delete('/:id', (req, res) => {
+  const userId = req.params.id;
+  Users.destroy(userId)
+    .then(knexRes => res.send("User deleted"))
     .catch((err) => console.log('err:', err))
 });
 
