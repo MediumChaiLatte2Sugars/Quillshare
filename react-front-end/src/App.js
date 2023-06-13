@@ -1,38 +1,47 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      message: 'Click the button to load data!'
-    }
-  }
+import { Route, Routes } from "react-router";
+import { Box ,createTheme ,ThemeProvider } from "@mui/material";
+import Navbar from "./components/Navbar";
+import Explore from "./components/Explore";
+import Community from "./components/Community";
+import CreateStory from "./components/CreateStory";
+import HomePage from "./components/HomePage";
+import Feed from "./components/Feed";
 
-  fetchData = () => {
-    axios.get('/api/data') // You can simply make your requests to "/api/whatever you want"
-    .then((response) => {
-      // handle success
-      console.log(response.data) // The entire response from the Rails API
+// import Sidebar from "./components/Sidebar";
+// import Feed from "./components/Feed";
+// import Rightbar from "./components/Rightbar";
 
-      console.log(response.data.message) // Just the message
-      this.setState({
-        message: response.data.message
-      });
-    }) 
-  }
 
-  render() {
-    return (
-      <div className="App">
-        <h1>{ this.state.message }</h1>
-        <button onClick={this.fetchData} >
-          Fetch Data
-        </button>        
-      </div>
-    );
-  }
+import { useState } from "react";
+
+function App() {
+  const [mode, setMode] = useState("light");
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
+  return (
+  <ThemeProvider theme={darkTheme}>
+    <Box>
+      <Navbar/>
+      
+     <Routes>
+     <Route path="/homepage" element={<HomePage /> } />
+     <Route path="/explore" element={<Explore /> } />
+     <Route path="/community" element={<Community /> } />
+     <Route path="/createstory" element={<CreateStory /> } />
+     <Route path="/feed" element={<Feed /> } />
+    
+     </Routes>
+    
+    </Box>
+  </ThemeProvider>
+  
+  );
 }
 
 export default App;
+
