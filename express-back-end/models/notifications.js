@@ -1,7 +1,7 @@
 const createModel = require('../helpers/model-helper')
 
 const name = 'Notifications'
-const tableName = 'Notifications'
+const tableName = 'notifications'
 
 const selectableProps = [
   'id',
