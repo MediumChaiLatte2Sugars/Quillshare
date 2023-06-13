@@ -6,7 +6,7 @@ exports.seed = knex => knex(Notifications.tableName).del()
       'user1': 1,
       'user2': 2,
       'story_id': null,
-      'notification_type': `${user2} started following you`,
+      'notification_type': ` started following you`,
       'is_read': false,
     },
     {
