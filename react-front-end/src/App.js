@@ -4,7 +4,6 @@ import { Box ,createTheme ,ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
 import Explore from "./components/Explore";
 import Community from "./components/Community";
-import CreateStory from "./components/CreateStory";
 import HomePage from "./components/HomePage";
 import Feed from "./components/Feed";
 
@@ -34,8 +33,7 @@ function App() {
      <Route path="/homepage" element={<HomePage /> } />
      <Route path="/explore" element={<Explore /> } />
      <Route path="/community" element={<Community /> } />
-     <Route path="/createstory" element={<CreateStory /> } />
-     <Route path="/feed" element={<Feed /> } />
+      <Route path="/feed" element={<Feed /> } />
     
      </Routes>
     
