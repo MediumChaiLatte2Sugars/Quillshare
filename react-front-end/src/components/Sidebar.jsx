@@ -25,8 +25,8 @@ import {
     return (
       <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
         <Box position="fixed">
-          <List>
-            <ListItem disablePadding  component={Link} to="/feed">
+          <List  >
+            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}} component={Link} to="/Homepage">
               <ListItemButton component="a" href="#home">
                 <ListItemIcon>
                   <Home />
@@ -34,6 +34,28 @@ import {
                 <ListItemText primary="Homepage" />
               </ListItemButton>
             </ListItem>
+
+
+            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}} component={Link} to="/Explore">
+              <ListItemButton component="a" href="#simple-list">
+                <ListItemIcon>
+                  <Storefront />
+                </ListItemIcon>
+                <ListItemText primary="Explore" />
+              </ListItemButton>
+            </ListItem>
+
+
+            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}} component={Link} to="/Community">
+              <ListItemButton component="a" href="#simple-list">
+                <ListItemIcon>
+                  <Group />
+                </ListItemIcon>
+                <ListItemText primary="Community" />
+              </ListItemButton>
+            </ListItem>
+
+
             <ListItem disablePadding >
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
@@ -42,38 +64,29 @@ import {
                 <ListItemText primary="Create Story" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemIcon>
-                  <Group />
-                </ListItemIcon>
-                <ListItemText primary="Notifications" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemIcon>
-                  <Storefront />
-                </ListItemIcon>
-                <ListItemText primary="Explore" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding >
+
+
+            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}} component={Link} to="/Feed">
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
                   <Person />
                 </ListItemIcon>
-                <ListItemText primary="Saved Stories" />
+                <ListItemText primary="My Saved Stories" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+
+
+            <ListItem disablePadding >
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
                   <Settings />
                 </ListItemIcon>
-                <ListItemText primary="Settings" />
+                <ListItemText primary="Published Stories" />
               </ListItemButton>
             </ListItem>
+
+
+            
             <ListItem disablePadding >
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
@@ -82,6 +95,8 @@ import {
                 <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
+
+
             <ListItem disablePadding>
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
@@ -90,6 +105,8 @@ import {
                 <Switch onChange={e=>setMode(mode === "light" ? "dark" : "light")}/>
               </ListItemButton>
             </ListItem>
+
+
           </List>
         </Box>
       </Box>

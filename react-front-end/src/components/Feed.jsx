@@ -3,7 +3,7 @@ import {Box, Stack ,Skeleton, createTheme ,ThemeProvider } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Rightbar from "./Rightbar";
 import { useState } from "react";
-import Post from "./Post";
+import StoryList from "./StoryList";
 
 const Feed = () => {
   const [loading, setLoading] = useState(true);
@@ -40,9 +40,9 @@ const Feed = () => {
               ) : (
 
             <>
-             <Post />
-             <Post />
-             <Post />
+             <StoryList />
+             <StoryList />
+             <StoryList />
           
             </>
              )}

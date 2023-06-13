@@ -1,10 +1,10 @@
-import React, { Component }  from 'react';
-import { Favorite, FavoriteBorder, MoreVert, Share , LibraryAdd ,ModeComment} from "@mui/icons-material";
+import React from 'react';
+import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment} from "@mui/icons-material";
 import {
   Avatar,
   Card,
+  Box,
   Button,
-  CardActions,
   CardContent,
   CardHeader,
   CardMedia,
@@ -12,7 +12,16 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+
+
+import { Visibility ,Bookmarks, IosShare } from "@mui/icons-material";
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+
 const Post = () => {
+
+  const [value, setValue] = React.useState(0);
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -21,24 +30,19 @@ const Post = () => {
             R
           </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVert />
-          </IconButton>
-        }
         title="Robert Johnson"
         subheader="June 11, 2023"
 
 
       />
 
-        <Typography variant="body2" color="Bold" fontSize={25}>
+        <Typography variant="body2" color="Bold" fontSize={22} sx={{ ml:2 }}>
           Title of the story :
         </Typography>
 
       <CardMedia 
         component="img"
-        sx={{ width: 100 , height: 100 }}
+        sx={{ width: 100 , height: 100 , ml:2}}
         
         image="https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c"
         alt="Paella dish"
@@ -49,28 +53,46 @@ const Post = () => {
           together with your guests. Add 1 cup of frozen peas along with the
           mussels, if you like.
         </Typography>
-        <Button variant="contained" size="small">
-          Let's Read
-        </Button>
-      </CardContent>
-      <CardActions disableSpacing>
+
+        
         <IconButton aria-label="add to favorites">
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite sx={{ color: "red" }} />}
           />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="LibraryAdd">
           <LibraryAdd />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="ModeComment">
           <ModeComment />
         </IconButton>
         <IconButton aria-label="share">
           <Share />
         </IconButton>
-      </CardActions>
-      
+     
+
+        <Button variant="contained" size="small">
+          Let's Read
+        </Button>
+      </CardContent>
+
+
+      <Box sx={{ width: 500 }}>
+      <BottomNavigation
+        showLabels
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      >
+        <BottomNavigationAction label="1.2 K" icon={<Visibility />} />
+         <BottomNavigationAction label="76 K" icon={<IosShare />} />
+         <BottomNavigationAction label="400 K" icon={<Bookmarks />} />
+       
+      </BottomNavigation>
+    </Box>
+
     </Card>
   );
 };

@@ -3,6 +3,7 @@ import {Box, Stack , createTheme ,ThemeProvider } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Rightbar from "./Rightbar";
 import { useState } from "react";
+import CommunityList from "./CommunityList";
 
 const Community = () => {
 
@@ -25,6 +26,10 @@ const Community = () => {
            <Box flex={4} p={{ xs: 0, md: 2 }}>
 
             <h2> Community Of Story Tellers</h2>
+            
+            <CommunityList />
+             <CommunityList />
+             <CommunityList />
 
            </Box>
 
