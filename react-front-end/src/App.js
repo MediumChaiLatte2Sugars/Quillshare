@@ -1,4 +1,4 @@
-
+import React, { Component }  from 'react';
 import { Route, Routes } from "react-router";
 import { Box ,createTheme ,ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
@@ -16,6 +16,8 @@ import Feed from "./components/Feed";
 import { useState } from "react";
 
 function App() {
+
+  
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
     palette: {
