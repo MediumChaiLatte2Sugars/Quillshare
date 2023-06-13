@@ -1,5 +1,5 @@
 import React from 'react';
-import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment} from "@mui/icons-material";
+import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment, AutoStories, Schedule} from "@mui/icons-material";
 import {
   Avatar,
   Card,
@@ -18,7 +18,7 @@ import { Visibility ,Bookmarks, IosShare } from "@mui/icons-material";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
-const Post = () => {
+const CategoryStoryList = () => {
 
   const [value, setValue] = React.useState(0);
 
@@ -30,6 +30,7 @@ const Post = () => {
             R
           </Avatar>
         }
+
         title="Robert Johnson"
         subheader="June 11, 2023"
 
@@ -70,6 +71,7 @@ const Post = () => {
         <IconButton aria-label="share">
           <Share />
         </IconButton>
+        
      
 
         <Button variant="contained" size="small">
@@ -86,7 +88,9 @@ const Post = () => {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="1.2 K" icon={<Visibility />} />
+         <BottomNavigationAction label="5 Min.Read" icon={<AutoStories />} />
+         <BottomNavigationAction label="3 Days ago" icon={<Schedule />} />
+        <BottomNavigationAction  label="1.2 K" icon={<Visibility />} />
          <BottomNavigationAction label="76 K" icon={<IosShare />} />
          <BottomNavigationAction label="400 K" icon={<Bookmarks />} />
        
@@ -97,4 +101,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default CategoryStoryList;

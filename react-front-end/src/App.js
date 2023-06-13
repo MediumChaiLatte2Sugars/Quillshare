@@ -8,6 +8,7 @@ import Explore from "./components/Explore";
 import Community from "./components/Community";
 import HomePage from "./components/HomePage";
 import Feed from "./components/Feed";
+import CategoryStory from "./components/CategoryStory";
 
 // import Sidebar from "./components/Sidebar";
 // import Feed from "./components/Feed";
@@ -28,7 +29,8 @@ class App extends Component {
      <Route path="/homepage" element={<HomePage /> } />
      <Route path="/explore" element={<Explore /> } />
      <Route path="/community" element={<Community /> } />
-      <Route path="/feed" element={<Feed /> } />
+     <Route path="/feed" element={<Feed /> } />
+     <Route path="/CategoryStory" element={<CategoryStory /> } />
      </Routes>
     </Box>
   

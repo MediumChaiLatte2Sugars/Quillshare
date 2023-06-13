@@ -6,7 +6,8 @@ import { Box, Stack , createTheme ,ThemeProvider } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Rightbar from "./Rightbar";
 import { useState } from "react";
-
+import {Link} from "react-router-dom";
+  
 const Explore = () => {
 
   const [mode, setMode] = useState("light");
@@ -29,7 +30,7 @@ const Explore = () => {
 
      <h2>Popular Categories</h2>
      <Grid container spacing={1}>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/CategoryStory" >
         <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', p: 2 }}>
           Adventure
         </Box>
@@ -45,7 +46,7 @@ const Explore = () => {
          Non Fiction
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4}  >
         <Box sx={{ bgcolor: 'error.main', color: 'error.contrastText', p: 2 }}>
          How To
         </Box>

@@ -3,9 +3,9 @@ import {Box, Stack ,Skeleton, createTheme ,ThemeProvider } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Rightbar from "./Rightbar";
 import { useState } from "react";
-import SavedStoryList from "./SavedStoryList";
+import CategoryStoryList from "./CategoryStoryList";
 
-const Feed = () => {
+const CategoryStory = () => {
   const [loading, setLoading] = useState(true);
   setTimeout(() => {
     setLoading(false);
@@ -28,7 +28,7 @@ const Feed = () => {
        
           <Box flex={4} p={{ xs: 0, md: 2 }}>
 
-              <h2> My Saved Stories</h2>
+              <h2> Category Name:</h2>
 
               {loading ? (
                <Stack spacing={1}>
@@ -40,9 +40,9 @@ const Feed = () => {
               ) : (
 
             <>
-             <SavedStoryList />
-             <SavedStoryList />
-             <SavedStoryList />
+             <CategoryStoryList />
+             <CategoryStoryList />
+             <CategoryStoryList />
           
             </>
              )}
@@ -59,4 +59,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default CategoryStory;

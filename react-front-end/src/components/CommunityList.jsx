@@ -7,7 +7,7 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
-const Post = () => {
+const CommunityList = () => {
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
@@ -45,4 +45,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default CommunityList;
