@@ -62,13 +62,12 @@ exports.up = function(knex) {
       table.integer('user1').unsigned().notNullable();
       table.integer('user2').unsigned();
       table.integer('category_id').unsigned();
-      table.integer('tags_id').unsigned();
       table.integer('story_id').unsigned();
       table.foreign('user1').references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
       table.foreign('user2').references('id').inTable('users');
       table.foreign('category_id').references('id').inTable('categories');
-      table.foreign('tags_id').references('id').inTable('tags');
       table.foreign('story_id').references('id').inTable('stories');
+      table.string('tag_name');
       table.timestamp('created_at').defaultTo(knex.fn.now());
     })
 

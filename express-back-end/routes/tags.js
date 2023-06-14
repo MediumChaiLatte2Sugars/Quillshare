@@ -15,11 +15,9 @@ router.get('/', (req, res) => {
     .catch((err) => console.log('err:', err))
 });
 
-
-// GET a tag by id ------ /api/stories/:id
-router.get('/:id', (req, res) => {
-  const tagId = req.params.id;
-  Tags.findById(tagId)
+router.get('/:name', (req, res) => {
+  const name = req.params.name;
+  Tags.getAllStoriesbyTagName(name)
     .then((tag) => {
       res.send(tag);
     })
