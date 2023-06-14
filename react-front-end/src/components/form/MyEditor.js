@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Editor, RichUtils } from 'draft-js'; // EditorState removed (imported into component as prop)
 import 'draft-js/dist/Draft.css'
+import '../../MyEditor.css'
 
 const styleMap = {
   CODE: {
