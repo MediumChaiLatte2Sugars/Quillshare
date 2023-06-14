@@ -6,10 +6,21 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
+
 
 ReactDOM.render(
 <BrowserRouter>
+<Auth0Provider
+  domain="dev-2jggyfjpths0o6ur.us.auth0.com"
+  clientId="kERHuWD6o8BOtyhWE2xSQCEPa9KPhnGq"
+  authorizationParams={{
+    redirect_uri: window.location.origin
+  }}
+  cacheLocation="localstorage"
+>
 <App />
+</Auth0Provider>
 </BrowserRouter>
 
 

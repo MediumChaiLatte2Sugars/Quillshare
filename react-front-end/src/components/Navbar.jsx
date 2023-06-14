@@ -12,16 +12,61 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 // import AdbIcon from '@mui/icons-material/Adb';
+
+import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
+
 import {Link} from "react-router-dom";
 import { BorderColor, HistoryEdu ,CircleNotifications} from "@mui/icons-material";
 
 const pages = ['Explore', 'Community'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+const fetchData = async (user) => {
+  try {
+    // Check if the user is registered in our database
+    const getUsers = await axios.get(`/api/users`);
+    const filteredUser = getUsers.data.user.find((u) => u.email === user.email);
+
+    if (!filteredUser) {
+      // User is not registered, perform registration
+      const params = {
+        username: user.nickname,
+        password: user.sub,
+        email: user.email,
+        profile_pic: user.picture,
+        bio: ''
+      };
+
+      // Register the user
+      const postedUsers = await axios.post(`/api/users`, params);
+      const response = await axios.get(`/api/users/${postedUsers.data.user.id}`);
+      console.log(response);
+      return response.data[0];
+    } else {
+      // User is already registered
+      const response = await axios.get(`/api/users/${filteredUser.id}`);
+      console.log(response);
+      return response.data[0];
+    }
+  } catch (error) {
+    console.error(error);
+    // Throw the error to propagate it to the caller
+    throw error;
+  }
+};
+
+
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  
+  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  
+  const handleLogin = () => {
+    loginWithRedirect();
+    fetchData(user);
+  };
 
 
   const handleOpenNavMenu = (event) => {
@@ -169,12 +214,20 @@ function ResponsiveAppBar() {
           <Badge color="error">
             <CircleNotifications />
           </Badge>
-          <Typography variant="h6">
-            Username
-          </Typography>
+          
+          {isAuthenticated ? <Typography variant="h6">
+            {user.name}
+          </Typography>: 
+          
+          <Button
+            color="primary"
+            onClick={handleLogin}
+            size="sm"
+            variant="plain"
+          > Sign In</Button>}
           </Icons>
 
-          <Box sx={{ flexGrow: 0 }}>
+          {isAuthenticated && <Box sx={{ flexGrow: 0 }}>
           
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -206,9 +259,9 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem >Saved Stories</MenuItem>
               <MenuItem>Stories</MenuItem>
-               <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={() => logout({ returnTo: window.location.origin })}>Logout</MenuItem>
              </Menu>
-          </Box>
+          </Box>}
           
         </Toolbar>
       </Container>
