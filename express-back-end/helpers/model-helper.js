@@ -57,12 +57,24 @@ module.exports = ({
     .join('stories', 'stories.id', '=', 'story_categories.story_id')
     .join('categories', 'categories.id', '=', 'story_categories.category_id')
     .where({'story_categories.category_id': val})
+    .andWhere('stories.type', 'public')
+    .andWhere('stories.status', 'published')
     .timeout(timeout)
 
   const getAllSavedStoriesbyUserId = (val) => knex.select(newSelectableProps)
     .from(tableName)
     .join('stories', 'stories.id', '=', 'saved_stories.story_id')
     .where({'saved_stories.user_id': val})
+    .andWhere('stories.type', 'public')
+    .andWhere('stories.status', 'published')
+    .timeout(timeout)
+
+  const getAllStoriesbyTagName = (val) => knex.select(newSelectableProps)
+    .from(tableName)
+    .join('stories', 'stories.id', '=', 'tags.story_id')
+    .where({'tags.name': val})
+    .andWhere('stories.type', 'public')
+    .andWhere('stories.status', 'published')
     .timeout(timeout)
 
   return {
@@ -79,6 +91,7 @@ module.exports = ({
     update,
     destroy,
     getAllStoriesByCategoryId,
-    getAllSavedStoriesbyUserId
+    getAllSavedStoriesbyUserId,
+    getAllStoriesbyTagName,
   }
 }
