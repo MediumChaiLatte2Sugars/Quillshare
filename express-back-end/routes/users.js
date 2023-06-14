@@ -1,6 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
-const { Users, Stories, SavedStories, Subscriptions} = require("../models");
+const { Users, Stories, SavedStories, Subscriptions, StoryCategories, Tags} = require("../models");
 
 // Handle user login  ---- /api/users/login/:id
 router.get("/login/:id", (req, res) => {
@@ -27,14 +27,63 @@ router.get('/', (req, res) => {
     .catch((err) => console.log('err:', err))
 });
 
-// GET a user by id ---- /api/users/:id
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
   Users.findById(id)
-    .then((user) => {
-      res.send(user);
+    .then(users => {
+      const data = {
+        users,
+        message: 'Get all user'
+      }
+      res.send(data)
     })
-    .catch((err) => console.log("err:", err));
+    .catch((err) => console.log('err:', err))
+})
+
+// GET a user by id ---- /api/users/:id
+router.get("/:id/feeds", async (req, res) => {
+  const id = req.params.id;
+  const user = await Users.findById(id);
+  let subscriptions = await Subscriptions.find({user1: user.length === 1 ? user[0].id : null})
+  let storyFeeds = [];
+  try {
+    subscriptions = await Promise.all(subscriptions.map(async(subs) =>  {
+      /**
+       * Retrieve all the stories under subscribed:
+       * Category-stories, 
+       * Followed UserStories, 
+       * tagsStories, 
+       * Saved Stories
+       */
+      if(subs.category_id !== null) {
+        storyFeeds.push(await StoryCategories.getAllStoriesByCategoryId(subs.category_id))
+      }
+      if(subs.user2 !== null) {
+        let newStories = await Stories.find({user_id: subs.user2, type: 'public', status: 'published'})
+        newStories= newStories.map((oldProp, newProp) => ({
+          ['story_id']: oldProp.id,
+          ...oldProp
+        }))
+        storyFeeds.push(newStories)
+      }
+      if(subs.story_id !== null) {
+        let newStories = await Stories.findById(subs.story_id)
+        newStories= newStories.map((oldProp, newProp) => ({
+          ['story_id']: oldProp.id,
+          ...oldProp
+        }))
+        storyFeeds.push(newStories)
+      }
+      if(subs.tag_name !== null) {
+        storyFeeds.push(await Tags.getAllStoriesbyTagName(subs.tag_name))
+      }
+    }))
+
+    storyFeeds = storyFeeds.flat().filter((v,i,a)=>a.findIndex(v2=>(v2.story_id===v.story_id))===i)
+    res.send({...user,storyFeeds})
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // GET stories of a user by id ---- /api/users/:id/stories
@@ -74,7 +123,7 @@ router.post("/:id/saved-stories", (req, res) => {
 // UPDATE a user's saved story by id  ---- /api/users/:userId/saved-stories/:id
 router.put("/:userId/saved-stories/:id", (req, res) => {
   const id = req.params.id;
-  const props = req.body.user
+  const props = req.body
 
   SavedStories.update(id, props )
     .then((stories) => {
@@ -86,10 +135,13 @@ router.put("/:userId/saved-stories/:id", (req, res) => {
 // UPDATE a user by id  ---- /api/users/:id
 router.put('/:id', (req, res) => {
   const userId = req.params.id;
-  const props = req.body.user
+  const props = req.body
 
   Users.update(userId, props)
-    .then(users => res.send(users))
+    .then(users => {
+      console.log(users)
+      res.send(users)
+    })
     .catch((err) => console.log('err:', err))
 });
 
@@ -106,12 +158,13 @@ router.post('/', (req, res) => {
     .catch((err) => console.log('err:', err))
 });
 
-// DELETE a user by id  ---- /api/users/:id
-router.delete('/:id', (req, res) => {
+// DELETE a user by id
+router.delete("/:id", (req, res) => {
   const userId = req.params.id;
+
   Users.destroy(userId)
-    .then(knexRes => res.send("User deleted"))
-    .catch((err) => console.log('err:', err))
+    .then((users) => res.send(users))
+    .catch((err) => console.log("err:", err));
 });
 
 module.exports = router;

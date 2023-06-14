@@ -12,7 +12,7 @@ exports.seed = knex => knex(Tags.tableName).del()
     },
     {
       story_id: 3,
-      name: 'happiness'
+      name: 'life'
     },
     {
       story_id: 4,
