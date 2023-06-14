@@ -26,7 +26,7 @@ const fetchData = async (user) => {
   try {
     // Check if the user is registered in our database
     const getUsers = await axios.get(`/api/users`);
-    const filteredUser = getUsers.data.user.find((u) => u.email === user.email);
+    const filteredUser = getUsers.users.find((u) => u.email === user.email);
 
     if (!filteredUser) {
       // User is not registered, perform registration
@@ -251,7 +251,7 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem component={Link} to="/profile">Profile</MenuItem>
               <MenuItem>Notifications
               <Badge color="error">
               <CircleNotifications />

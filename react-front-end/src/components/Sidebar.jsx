@@ -87,7 +87,7 @@ import {
 
 
             
-            <ListItem disablePadding >
+            <ListItem disablePadding component={Link} to="/profile">
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
                   <AccountBox />
