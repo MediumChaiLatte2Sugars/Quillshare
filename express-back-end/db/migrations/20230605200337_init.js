@@ -108,13 +108,12 @@ exports.up = function(knex) {
 
     .createTable('messages', function (table) {
       table.increments('id').primary();
-      table.integer('user1').unsigned().notNullable();;
-      table.integer('user2').unsigned().notNullable();;
-      table.integer('story_id').unsigned();
+      table.integer('user1').unsigned().notNullable();
+      table.integer('user2').unsigned().notNullable();
+      table.integer('room_number').unsigned().notNullable();
       
       table.foreign('user1').references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
       table.foreign('user2').references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
-      table.foreign('story_id').references('id').inTable('stories');
       table.text('message_content');
       table.boolean('is_read').defaultTo(false);
       table.timestamp('created_at').defaultTo(knex.fn.now());

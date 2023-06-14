@@ -26,6 +26,13 @@ exports.seed = knex => knex(Subscriptions.tableName).del()
       'user2': null,
       'category_id': null,
       'story_id': 1,
+    },
+    {
+      'user1': 2,
+      'user2': null,
+      'category_id': null,
+      'story_id': null,
+      'tags_id': 1,
     }
   ])
   .then(subs => Promise.all(subs.map(s => Subscriptions.create(s))))

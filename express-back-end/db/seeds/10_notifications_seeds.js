@@ -6,7 +6,7 @@ exports.seed = knex => knex(Notifications.tableName).del()
       'user1': 1,
       'user2': 2,
       'story_id': null,
-      'notification_type': `${'User 2\'s name here'} started following you`,
+      'notification_type': 'started following you',
       'is_read': false,
     },
     {
@@ -45,5 +45,5 @@ exports.seed = knex => knex(Notifications.tableName).del()
       'is_read': false,
     },
   ])
-  .then(like => Promise.all(like.map(s => Notifications.create(s))))
+  .then(notif => Promise.all(notif.map(s => Notifications.create(s))))
   .catch(err => console.log('err: ', err))

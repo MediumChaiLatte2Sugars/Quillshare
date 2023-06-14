@@ -7,8 +7,8 @@ const selectableProps = [
   'id',
   'user1',
   'user2',
-  'story_id',
   'message_content',
+  'room_number',
   'is_read',
   'created_at'
 ]
