@@ -1,22 +1,22 @@
-const Express = require('express');
+const Express = require("express");
 const router = Express.Router();
-const { Stories, StoryCategories, Comments, Likes } = require('../models')
+const { Stories, StoryCategories, Comments, Likes, Tags } = require("../models");
 
 // GET all stories ------ /api/stories
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   Stories.findAll()
-    .then(story => {
+    .then((story) => {
       const data = {
         story,
-        message: 'Get all story'
-      }
-      res.send(data)
+        message: "Get all story",
+      };
+      res.send(data);
     })
-    .catch((err) => console.log('err:', err))
+    .catch((err) => console.log("err:", err));
 });
 
 // GET a single story by id ------ /api/stories/:id
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   const storyId = req.params.id;
   // Stories.findById(storyId)
   //   .then((story) => {
@@ -25,18 +25,18 @@ router.get('/:id', (req, res) => {
   //   })
   //   .catch((err) => console.log('err:', err));
   Likes.findAll()
-    .then(story => {
+    .then((story) => {
       const data = {
         story,
-        message: 'Get all story'
-      }
-      res.send(data)
+        message: "Get all story",
+      };
+      res.send(data);
     })
-    .catch((err) => console.log('err:', err))
+    .catch((err) => console.log("err:", err));
 });
 
 // UPDATE a story by id -----  /api/stories/:id
-router.put('/:id', (req, res) => {
+router.put("/:id", (req, res) => {
   const storyId = req.params.id;
   const props = req.body.story;
   console.log(req.body);
@@ -45,34 +45,68 @@ router.put('/:id', (req, res) => {
       console.log(story);
       res.send(story);
     })
-    .catch((err) => console.log('err:', err));
+    .catch((err) => console.log("err:", err));
 });
 
 // POST a new story -----   /api/stories
-router.post('/', (req, res) => {
-  const props = req.body
-  Stories.create(props)
-    .then(story => {
-      const params = {
-        story_id: story.id,
-        category_id: story.category_id
-      }
-      StoryCategories.create(params)
-      res.json({
-        ok: true,
-        message: 'Stories created',
-        story
-      })
-    })
-    .catch((err) => console.log('err:', err))  
+router.post("/", async (req, res) => {
+  try {
+    const props = req.body;
+    console.log(props);
+
+    // Extract tags from props
+    const tags = props.tags.split(" ");
+
+    // Assemble required data for Story db creation
+    const storyData = {
+      user_id: 1, // Default user for testing
+      category_id: props.category,
+      title: props.title,
+      content: JSON.stringify(props.editorState),
+      status: "published",
+      type: props.visibility,
+    };
+
+    console.log(storyData);
+
+    // Create story
+    const story = await Stories.create(storyData);
+
+    // Associate story to category
+    const params = {
+      story_id: story[0].id,
+      category_id: story[0].category_id,
+    };
+
+    console.log("story: ", story);
+
+    await StoryCategories.create(params);
+
+    // Associate story to tags
+    for (let tag of tags) {
+      await Tags.create({ story_id: story[0].id, name: tag });
+    }
+
+    res.json({
+      ok: true,
+      message: "Story created",
+      story,
+    });
+  } catch (err) {
+    console.log("err:", err);
+    res.status(500).json({
+      ok: false,
+      message: "Failed to create story",
+    });
+  }
 });
 
 // DELETE a story   ------   /api/stories/:id
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   const storyId = req.params.id;
   Stories.destroy(storyId)
-    .then(story => res.send(story))
-    .catch((err) => console.log('err:', err))
+    .then((story) => res.send(story))
+    .catch((err) => console.log("err:", err));
 });
 
 module.exports = router;
