@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import {Box , Badge , styled, InputBase }from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,7 +26,7 @@ const fetchData = async (user) => {
   try {
     // Check if the user is registered in our database
     const getUsers = await axios.get(`/api/users`);
-    const filteredUser = getUsers.users.find((u) => u.email === user.email);
+    const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
 
     if (!filteredUser) {
       // User is not registered, perform registration
@@ -41,13 +41,12 @@ const fetchData = async (user) => {
       // Register the user
       const postedUsers = await axios.post(`/api/users`, params);
       const response = await axios.get(`/api/users/${postedUsers.data.user.id}`);
-      console.log(response);
-      return response.data[0];
+
+      return response;
     } else {
       // User is already registered
       const response = await axios.get(`/api/users/${filteredUser.id}`);
-      console.log(response);
-      return response.data[0];
+      return response;
     }
   } catch (error) {
     console.error(error);
@@ -58,14 +57,39 @@ const fetchData = async (user) => {
 
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const prevUserRef = useRef(null);
+  const [userObject, setUserObject] = useState(null);
   
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+  useEffect(() => {
+    const prevUser = prevUserRef.current;
+    
+    if (prevUser !== null && prevUser !== user) {
+      const fetchUserObject = async () => {
+        try {
+
+          const response = await fetchData(user);
+          const responseUserObject = response.data.users[0];
+
+          setUserObject(responseUserObject);
+
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      fetchUserObject();
+    }
+
+    // Update the previous user value
+    prevUserRef.current = user;
+  }, [user]);
   
   const handleLogin = () => {
-    loginWithRedirect();
-    fetchData(user);
+      loginWithRedirect();
   };
 
 
