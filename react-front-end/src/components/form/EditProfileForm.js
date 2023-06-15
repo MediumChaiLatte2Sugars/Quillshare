@@ -46,7 +46,7 @@ const validatePhotoDimensions = (file) => {
 };
 
 const validationSchema = Yup.object({
-  photo: Yup.mixed()
+  profile_pic: Yup.mixed()
     .required("Photo is required"),
     // .test(
     //   "file-dimensions",
@@ -84,14 +84,14 @@ export const EditProfileForm = ({user}) => {
 
   return (
     <Formik
-      initialValues={{ photo: null, username: user.username, bio: user.bio }}
+      initialValues={{ profile_pic: null, username: user.username, bio: user.bio }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <Form>
-        <label htmlFor="photo">[photo icon goes here]</label>
-        <PhotoInput name="photo" />
-        <ErrorMessage name="photo" />
+        <label htmlFor="profile_pic">[photo icon goes here]</label>
+        <PhotoInput name="profile_pic" />
+        <ErrorMessage name="profile_pic" />
 
         <label htmlFor="username">Username</label>
         <Field name="username" type="text" />
