@@ -5,6 +5,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import { Skeleton } from "@mui/material";
+
 import { useAuth0 } from '@auth0/auth0-react';
 
 import axios from 'axios';
@@ -42,22 +44,12 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileTabs() {
-  const { user, isAuthenticated } = useAuth0;
+export default function ProfileTabs({user}) {
   const [value, setValue] = useState(0);
-  const [filteredUser, setFilteredUser]  = useState(null);
-  const [filteredUserStoires, setFilteredUserStories]  = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  // useEffect(async () => {
-  //   const userData = await axios.get(`/api/users`);
-  //   setFilteredUser(userData.users.find((u) => u.email === user.email));
-  //   const userStoryData = await axios.get(`/api/users/${filteredUser.id}/stories`)
-  //   setFilteredUserStories(userStoryData)
-  // }, []);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -68,7 +60,10 @@ export default function ProfileTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {/* {filteredUser.bio} */}
+        {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+
+        <h3>Follows</h3>
+        <h3>Following</h3>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two

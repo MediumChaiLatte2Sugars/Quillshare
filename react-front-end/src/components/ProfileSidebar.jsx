@@ -21,10 +21,12 @@ import {
   ListItemIcon,
   ListItemText,
   Switch,
-  Avatar
+  Avatar,
+  Skeleton
 } from "@mui/material";
 
 import ProfileTabs from "./ProfileTabs";
+import ProfileEditModal from "./ProfileEditModal";
 
 // import Typography from '@mui/joy/Typography';
 
@@ -32,7 +34,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 
-const ProfileSidebar = ({mode,setMode}) => {
+const ProfileSidebar = ({mode,setMode, user}) => {
   return (
     <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
 
@@ -47,11 +49,13 @@ const ProfileSidebar = ({mode,setMode}) => {
         {/* //* conditionally render an edit button here */}
         <Box display="flex" justifyContent="space-between">
           <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" size="lg" />
-          <ModeEdit />
+          {/* <ModeEdit /> */}
+          <ProfileEditModal user={user}/>
         </Box>
 
         {/* //Consider putting these two in a flexbox */}
-        <h2>User Name</h2>
+        { user ? <h2>{user.username}</h2> : <Skeleton variant="text" sx={{ fontSize: '4rem' }} animation="wave" />}
+
 
         {/* // Actions */}
         <Box display="flex" justifyContent="space-between">
@@ -62,7 +66,7 @@ const ProfileSidebar = ({mode,setMode}) => {
       </Box>
 
       {/* //TODO box 2 -- Bio + Follow/Follower stats || Reading Lists */}
-      <ProfileTabs />
+      <ProfileTabs user={user}/>
       
     </Box>
   );
