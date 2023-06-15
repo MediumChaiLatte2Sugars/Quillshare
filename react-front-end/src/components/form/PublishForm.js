@@ -8,10 +8,10 @@ export const PublishForm = (props) => {
   const [createStoryFormValues, setCreateStoryFormValues] = useState(null);
 
   useEffect(() => {
-    if (publishSettingsFormValues && createStoryFormValues) {
+    if (publishSettingsFormValues && createStoryFormValues && props.user.id) {
       handleSubmit();
     }
-  }, [publishSettingsFormValues, createStoryFormValues]);
+  }, [publishSettingsFormValues, createStoryFormValues, props.user]);
 
   const handleSubmit = async () => {
     try {
@@ -19,6 +19,7 @@ export const PublishForm = (props) => {
       const combinedValues = {
         ...publishSettingsFormValues,
         ...createStoryFormValues,
+        user_id: props.user.id,
       };
       const response = await axios.post("/api/stories", combinedValues);
 

@@ -240,7 +240,7 @@ function ResponsiveAppBar() {
           </Badge>
           
           {isAuthenticated ? <Typography variant="h6">
-            {user.name}
+            {userObject ? userObject.username.split(" ")[0] : user.name}
           </Typography>: 
           
           <Button
@@ -255,7 +255,7 @@ function ResponsiveAppBar() {
           
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar>{userObject ? userObject.username.split("")[0] : user.name.split("")[0]}</Avatar>
               </IconButton>
             </Tooltip>
 
