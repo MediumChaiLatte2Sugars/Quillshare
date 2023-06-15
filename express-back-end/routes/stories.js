@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
 
     // Assemble required data for Story db creation
     const storyData = {
-      user_id: 1, // Default user for testing
+      user_id: props.user_id, 
       category_id: props.category,
       title: props.title,
       content: JSON.stringify(props.editorState),
