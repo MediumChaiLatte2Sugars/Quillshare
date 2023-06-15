@@ -11,6 +11,7 @@ import Feed from "./components/Feed";
 import CategoryStory from "./components/CategoryStory";
 import CreateStory from "./components/CreateStory"
 import Profile from './components/Profile';
+import SingleStory from './components/SingleStory';
 
 // import { withAuth0 } from "@auth0/auth0-react";
 
@@ -37,6 +38,7 @@ class App extends Component {
       <Route path="/CategoryStory" element={<CategoryStory /> } />
       <Route path="/createstory" element={<CreateStory /> } />
       <Route path="/profile" element={<Profile /> } />
+      <Route path="/story/:id" element={<SingleStory />} />
      </Routes>
     </Box>
   

@@ -11,8 +11,11 @@ import {
   Checkbox,
   IconButton,
   Typography,
-  Skeleton
+  Skeleton,
+  CircularProgress
 } from "@mui/material";
+
+import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -97,9 +100,14 @@ const SavedStoryList = ({story, author}) => {
         
      
 
-        <Button variant="contained" size="small">
-          Let's Read
-        </Button>
+        { story ? <Link to={`/story/${story.id}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" size="small">
+            Let's Read
+          </Button>
+        </Link>: <Button variant="contained" size="small" disabled={true}>
+        <CircularProgress size={20} color="inherit" /> Let's Read
+          </Button>}
+
       </CardContent>
 
 
