@@ -17,6 +17,23 @@ const selectableProps = [
   'updated_at',
 ]
 
+const newSelectableProps = [
+  'id',
+  'user_id',
+  'category_id',
+  'categories.name as category_name',
+  'title',
+  'content',
+  'status',
+  'type',
+  'view_count',
+  'created_at',
+  'published_date',
+  'updated_at',
+  // 'likes'
+]
+
+
 module.exports = knex => {
   const model = createModel({
     knex,
