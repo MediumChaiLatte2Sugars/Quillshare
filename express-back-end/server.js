@@ -7,8 +7,8 @@ const PORT = 8080;
 const morgan = require('morgan');
 const axios = require('axios');
 // Express Configuration
-App.use(bodyParser.json({ limit: '10mb' }));
-App.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+app.use(BodyParser.json({ limit: '10mb' }));
+app.use(BodyParser.urlencoded({ limit: '10mb', extended: true }));
 App.use(Express.static('public'));
 
 App.use('/api', routes);
