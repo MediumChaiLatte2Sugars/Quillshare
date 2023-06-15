@@ -31,8 +31,12 @@ const SingleStory = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(`/api/stories/${routeParams.id}`);
-      setStory(response.data[0]);
+      try {
+          const response = await axios.get(`/api/stories/${routeParams.id}`);
+          return setStory(response.data[0]);
+        } catch (err){
+        console.error(err);
+      }
     }
     fetchData();
   }, []);

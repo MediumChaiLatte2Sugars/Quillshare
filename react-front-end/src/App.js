@@ -29,7 +29,7 @@ class App extends Component {
 
     <Box>
     <Navbar/>
-
+    
      <Routes>
       <Route path="/homepage" element={<HomePage /> } />
       <Route path="/explore" element={<Explore /> } />

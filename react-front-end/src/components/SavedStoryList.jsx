@@ -41,14 +41,21 @@ const SavedStoryList = ({story, author}) => {
     return truncated;
   }
 
-  useEffect(async () => {
-    try {
-      const response = await axios.get(`/api/users/${author}`);
-      setUser(response.data.users[0]);
-    } catch (err) {
-      console.error(err);
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/users/${author}`);
+        setUser(response.data.users[0]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchData();
+  
+    return () => {};
   }, []);
+  
 
   return (
     <Card sx={{ margin: 5 }}>

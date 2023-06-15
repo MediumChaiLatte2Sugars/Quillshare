@@ -75,6 +75,7 @@ function ResponsiveAppBar() {
           const responseUserObject = response.data.users[0];
 
           setUserObject(responseUserObject);
+          return () => {};
 
         } catch (error) {
           console.error(error);
