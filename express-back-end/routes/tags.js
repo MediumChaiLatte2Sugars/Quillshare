@@ -5,15 +5,20 @@ const { Tags } = require('../models')
 // GET all tags ------ /api/stories
 router.get('/', (req, res) => {
   Tags.findAll()
-    .then(tag => {
-      const data = {
-        tag,
-        message: 'Get all tags'
-      }
-      res.send(data)
+    .then((tag) => {
+      res.send(tag);
     })
     .catch((err) => console.log('err:', err))
 });
+
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  Tags.findById(id)
+    .then((tag) => {
+      res.send(tag);
+    })
+    .catch((err) => console.log('err:', err))
+})
 
 router.get('/:name', (req, res) => {
   const name = req.params.name;
@@ -23,7 +28,6 @@ router.get('/:name', (req, res) => {
     })
     .catch((err) => console.log('err:', err));
 });
-
 
 // UPDATE a tag by id ------ /api/tags/:id
 router.put('/:id', (req, res) => {
@@ -40,11 +44,9 @@ router.put('/:id', (req, res) => {
 router.post('/', (req, res) => {
   const props = req.body
   Tags.create(props)
-    .then(tag => res.json({
-      ok: true,
-      message: 'tag created',
-      user
-    }))
+    .then((tag) => {
+      res.send(tag);
+    })
     .catch((err) => console.log('err:', err))
 });
 

@@ -1,20 +1,21 @@
 const Express = require('express');
 const router = Express.Router();
-const { Messages } = require('../models')
+const { Likes } = require('../models')
 
-// GET all Messages ------ /api/stories
+router.get('/', (req, res) => {
+  Likes.findAll()
+    .then(likes => {
+      res.send(likes)
+    })
+    .catch((err) => console.log('err:', err))
+});
 
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
-  Messages.findById(id)
-    .then(mes => res.send(mes))
-    .catch((err) => console.log('err:', err))
-})
-
-router.get("/:room_num", async (req, res) => {
-  const id = req.params.room_num;
-  Messages.find({room_number: id})
-    .then(mes => res.send(mes))
+  Likes.findById(id)
+    .then(users => {
+      res.send(likes)
+    })
     .catch((err) => console.log('err:', err))
 })
 
@@ -30,8 +31,17 @@ router.put('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   const props = req.body
-  Messages.create(props)
-    .then(mes => res.send(mes))
+  Likes.create(props)
+    .then((like) => {
+      res.send(like);
+    })
+    .catch((err) => console.log('err:', err))
+});
+
+router.delete('/:id', (req, res) => {
+  const likeId = req.params.id;
+  Likes.destroy(likeId)
+    .then(like => res.send(like))
     .catch((err) => console.log('err:', err))
 });
 
