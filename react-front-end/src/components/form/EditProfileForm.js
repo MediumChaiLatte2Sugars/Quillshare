@@ -63,11 +63,11 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-export const EditProfileForm = () => {
+export const EditProfileForm = ({user}) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
 
-      const response = await axios.put("/api/users/1", values); //! test id of the first user
+      const response = await axios.put(`/api/users/${user.id}`, values);
 
       // Handle the response as needed
       console.log(response.data);
@@ -84,7 +84,7 @@ export const EditProfileForm = () => {
 
   return (
     <Formik
-      initialValues={{ photo: null, username: "", bio: "" }}
+      initialValues={{ photo: null, username: user.username, bio: user.bio }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
