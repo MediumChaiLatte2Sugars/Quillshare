@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment, AutoStories, Schedule} from "@mui/icons-material";
+import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment, AutoStories, Schedule } from "@mui/icons-material";
 import {
   Avatar,
   Card,
@@ -12,7 +12,8 @@ import {
   IconButton,
   Typography,
   Skeleton,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from "@mui/material";
 
 import { Link } from 'react-router-dom';
@@ -26,10 +27,12 @@ import { Visibility ,Bookmarks, IosShare } from "@mui/icons-material";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
-const SavedStoryList = ({story, author}) => {
+const SavedStoryList = ({story, author, currentViewer}) => {
 
   const [value, setValue] = useState(0);
   const [user, setUser] = useState(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
 
   const truncateString = (str, maxLength) => {
     if (str.length <= maxLength) {
@@ -40,6 +43,18 @@ const SavedStoryList = ({story, author}) => {
     const truncated = str.substring(0, maxLength - 3) + '...';
     return truncated;
   }
+
+  const handleBookmark = async () => {
+    try {
+      const response = await axios.post(`/api/users/${currentViewer}/saved-stories`, {
+        story_id: story.id,
+        user_id: currentViewer,
+      });
+      setIsBookmarked(response.data.success);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +71,24 @@ const SavedStoryList = ({story, author}) => {
     return () => {};
   }, []);
   
+  useEffect(() => {
+    const fetchBookmarkStatus = async () => {
+      if (!isBookmarked){
+        try {
+          const response = await axios.get(`/api/users/${currentViewer}/saved-stories`);
+          const savedStories = response.data;
+          const result = savedStories.some(obj => obj.story_id === story.id);
+          setIsBookmarked(result);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+  
+    fetchBookmarkStatus();
+  
+    return () => {};
+  }, [isBookmarked])
 
   return (
     <Card sx={{ margin: 5 }}>
@@ -89,15 +122,21 @@ const SavedStoryList = ({story, author}) => {
         </Typography>
 
         
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="like story">
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite sx={{ color: "red" }} />}
           />
         </IconButton>
-        <IconButton aria-label="LibraryAdd">
-          <LibraryAdd />
-        </IconButton>
+        <Tooltip title="Add to Saved Stories">
+          <IconButton 
+            aria-label="LibraryAdd" 
+            onClick={handleBookmark}
+          >
+             {isBookmarked ? 
+            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
+          </IconButton> 
+        </Tooltip>
         <IconButton aria-label="ModeComment">
           <ModeComment />
         </IconButton>

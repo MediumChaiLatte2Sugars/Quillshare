@@ -78,7 +78,7 @@ const Profile = () => {
         <Box>
 
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <ProfileSidebar setMode={setMode} mode={mode} user={userObject}/>
+          {user && userObject ? <ProfileSidebar setMode={setMode} mode={mode} user={userObject} viewerIsSelf={user.email === userObject.email}/> : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
            
            <Box flex={4} p={{ xs: 0, md: 2 }}>
 
@@ -90,7 +90,7 @@ const Profile = () => {
                   content: convertStoryToRaw(story.content), 
                 };
 
-                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id}}/>;
+                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} currentViewer={userObject.id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id}}/>;
               }) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />
             }
             {/* <SavedStoryList />
