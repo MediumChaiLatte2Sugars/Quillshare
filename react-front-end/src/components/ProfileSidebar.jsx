@@ -34,7 +34,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 
-const ProfileSidebar = ({mode,setMode, user}) => {
+const ProfileSidebar = ({mode,setMode, user, viewerIsSelf}) => {
   return (
     <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
 
@@ -50,7 +50,7 @@ const ProfileSidebar = ({mode,setMode, user}) => {
         <Box display="flex" justifyContent="space-between">
           <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" size="lg" />
           {/* <ModeEdit /> */}
-          <ProfileEditModal user={user}/>
+         {viewerIsSelf && <ProfileEditModal user={user}/>}
         </Box>
 
         {/* //Consider putting these two in a flexbox */}
