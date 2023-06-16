@@ -15,4 +15,14 @@ router.get('/', (req, res) => {
     .catch((err) => console.log('err:', err))
 });
 
+router.put('/:id', (req, res) => {
+  const id = req.params.id;
+  const props = req.body
+  Notifications.update(id, props)
+    .then((n) => {
+      res.send(n);
+    })
+    .catch((err) => console.log('err:', err));
+});
+
 module.exports = router;

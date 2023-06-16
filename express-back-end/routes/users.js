@@ -40,7 +40,11 @@ router.get("/:id", async (req, res) => {
     .catch((err) => console.log('err:', err))
 })
 
-// GET a user by id ---- /api/users/:id
+/***
+ * 
+ *  User Feeds
+ * 
+ */
 router.get("/:id/feeds", async (req, res) => {
   const id = req.params.id;
   const user = await Users.findById(id);
@@ -79,14 +83,21 @@ router.get("/:id/feeds", async (req, res) => {
       }
     }))
 
-    storyFeeds = storyFeeds.flat().filter((v,i,a)=>a.findIndex(v2=>(v2.story_id===v.story_id))===i)
+    storyFeeds = storyFeeds
+                  .flat()
+                  .filter((v,i,a)=>
+                    a.findIndex(v2=>(v2.story_id===v.story_id))===i)
+                  .sort((a, b) => a.created_at - b.created_at)
     res.send({...user,storyFeeds})
   } catch (err) {
     console.error(err);
   }
 });
-
-// GET stories of a user by id ---- /api/users/:id/stories
+/***
+ * 
+ *  User Stories
+ * 
+ */
 router.get("/:id/stories", (req, res) => {
   const userId = req.params.id;
   Stories.find({ user_id: userId })
