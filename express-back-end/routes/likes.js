@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const likeId = req.params.id;
   Likes.destroy(likeId)
-    .then(like => res.send(like))
+    .then(() => res.sendStatus(204))
     .catch((err) => console.log('err:', err))
 });
 

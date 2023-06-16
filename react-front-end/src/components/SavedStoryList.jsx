@@ -70,6 +70,17 @@ const SavedStoryList = ({story, author, currentViewer}) => {
     }
   };
 
+  const handleUnlike = async () => {
+    try {
+      console.log("Like id before deleting: ", isLiked.id);
+      const response = await axios.delete(`/api/likes/${isLiked.id}`);
+      console.log("Handle UnLike Response: ", response.data);
+      setIsLiked(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,6 +122,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
           const response = await axios.get(`/api/users/${currentViewer}/story/likes?story_id=${story.id}`);
 
           const result = response.data;
+          console.log("Use Effect Like Fetching Repsonse: ", result);
           setIsLiked(result);
         } catch (err) {
           console.error(err);
@@ -154,8 +166,8 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         {story ? truncateString(html2plaintext(story.content), 200) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
         </Typography>
 
-        <Tooltip title="Like Story">
-          <IconButton aria-label="like story" onClick={handleLike}>
+        <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
+          <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
             {isLiked ? <Checkbox
               icon={<Favorite sx={{ color: "red" }} />}
               checkedIcon={<Favorite sx={{ color: "red" }} />}
