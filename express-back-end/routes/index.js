@@ -8,6 +8,6 @@ router.use('/categories', require('./categories'));
 router.use('/tags', require('./tags'));
 router.use('/messages', require('./messages'));
 router.use('/notifications', require('./notifications'));
-router.use('/likes', require('./notifications'));
+router.use('/likes', require('./likes'));
 
 module.exports = router;
