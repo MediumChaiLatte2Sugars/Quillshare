@@ -32,6 +32,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
   const [value, setValue] = useState(0);
   const [user, setUser] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
 
   const truncateString = (str, maxLength) => {
@@ -51,6 +52,19 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         user_id: currentViewer,
       });
       setIsBookmarked(response.data.success);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await axios.post("/api/likes", {
+        story_id: story.id,
+        user_id: currentViewer,
+      });
+      console.log("Handle Like Response: ", response.data);
+      setIsLiked(response.data[0]);
     } catch (err) {
       console.error(err);
     }
@@ -88,7 +102,26 @@ const SavedStoryList = ({story, author, currentViewer}) => {
     fetchBookmarkStatus();
   
     return () => {};
-  }, [isBookmarked])
+  }, [isBookmarked]);
+
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      if (!isLiked){
+        try {
+          const response = await axios.get(`/api/users/${currentViewer}/story/likes?story_id=${story.id}`);
+
+          const result = response.data;
+          setIsLiked(result);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+  
+    fetchLikeStatus();
+  
+    return () => {};
+  }, [isLiked])
 
   return (
     <Card sx={{ margin: 5 }}>
@@ -121,13 +154,17 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         {story ? truncateString(html2plaintext(story.content), 200) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
         </Typography>
 
-        
-        <IconButton aria-label="like story">
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite sx={{ color: "red" }} />}
-          />
-        </IconButton>
+        <Tooltip title="Like Story">
+          <IconButton aria-label="like story" onClick={handleLike}>
+            {isLiked ? <Checkbox
+              icon={<Favorite sx={{ color: "red" }} />}
+              checkedIcon={<Favorite sx={{ color: "red" }} />}
+            /> : <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite sx={{ color: "red" }} />}
+            />}
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Add to Saved Stories">
           <IconButton 
             aria-label="LibraryAdd" 
