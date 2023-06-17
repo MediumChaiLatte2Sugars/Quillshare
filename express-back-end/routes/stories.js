@@ -20,7 +20,6 @@ router.get("/:id", (req, res) => {
   const storyId = req.params.id;
   Stories.findById(storyId)
     .then((story) => {
-      console.log(story);
       res.send(story);
     })
     .catch((err) => console.log('err:', err));
