@@ -158,6 +158,25 @@ router.get("/:id/saved-stories", (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+// GET one saved storiy of a user by id ---- /api/users/:userId/saved-stories/:bookmarkId
+router.get("/:userId/saved-stories/:bookmarkId", (req, res) => {
+  const userId = req.params.userId;
+  const storyId = req.params.bookmarkId;
+
+  SavedStories.findOne({
+    user_id: userId,
+    story_id: storyId,
+  })
+    .then((story) => {
+      if (story) {
+        res.send(story);
+      } else {
+        res.send(null);
+      }
+    })
+    .catch((err) => console.log("err:", err));
+});
+
 // POST a new story to a user's saved stories ---- /api/users/:id/saved-stories
 router.post("/:id/saved-stories", (req, res) => {
   const props = req.body;
@@ -178,6 +197,16 @@ router.put("/:userId/saved-stories/:id", (req, res) => {
       res.send(stories);
     })
     .catch((err) => console.log("err:", err));
+});
+
+// DELETE a user's saved story by id  ---- /api/users/:userId/saved-stories/:id
+router.delete("/:userId/saved-stories/:bookmarkId", (req, res) => {
+  const userId = req.params.userId;
+  const bookmarkId = req.params.bookmarkId;
+  
+  SavedStories.destroy(bookmarkId)
+    .then(() => res.sendStatus(204))
+    .catch((err) => console.log('err:', err))
 });
 
 // UPDATE a user by id  ---- /api/users/:id

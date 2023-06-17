@@ -51,7 +51,18 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         story_id: story.id,
         user_id: currentViewer,
       });
-      setIsBookmarked(response.data.success);
+      setIsBookmarked(response.data[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnbookmark = async () => {
+    try {
+      console.log("Saved story id before deleting: ", isBookmarked.id , "Bookmark: ", isBookmarked);
+      const response = await axios.delete(`/api/users/${currentViewer}/saved-stories/${isBookmarked.id}`);
+      console.log("Handle Unbookmark Response: ", response);
+      setIsBookmarked(null);
     } catch (err) {
       console.error(err);
     }
@@ -63,7 +74,6 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         story_id: story.id,
         user_id: currentViewer,
       });
-      console.log("Handle Like Response: ", response.data);
       setIsLiked(response.data[0]);
     } catch (err) {
       console.error(err);
@@ -100,10 +110,9 @@ const SavedStoryList = ({story, author, currentViewer}) => {
     const fetchBookmarkStatus = async () => {
       if (!isBookmarked){
         try {
-          const response = await axios.get(`/api/users/${currentViewer}/saved-stories`);
+          const response = await axios.get(`/api/users/${currentViewer}/saved-stories/${story.id}`);
           const savedStories = response.data;
-          const result = savedStories.some(obj => obj.story_id === story.id);
-          setIsBookmarked(result);
+          setIsBookmarked(savedStories ? savedStories : null);
         } catch (err) {
           console.error(err);
         }
@@ -177,10 +186,10 @@ const SavedStoryList = ({story, author, currentViewer}) => {
             />}
           </IconButton>
         </Tooltip>
-        <Tooltip title="Add to Saved Stories">
+        <Tooltip title={isBookmarked ? "Remove from Saved Stories" : "Add to Saved Stories"}>
           <IconButton 
             aria-label="LibraryAdd" 
-            onClick={handleBookmark}
+            onClick={isBookmarked ? handleUnbookmark : handleBookmark}
           >
              {isBookmarked ? 
             <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
