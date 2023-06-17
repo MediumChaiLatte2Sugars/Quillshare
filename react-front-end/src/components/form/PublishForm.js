@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { PublishSettingsForm } from "./PublishSettingsForm";
 import { CreateStoryForm } from "./CreateStoryForm";
 import axios from "axios";
+import { Drawer, Box } from "@mui/material";
 
 export const PublishForm = (props) => {
   const [publishSettingsFormValues, setPublishSettingsFormValues] = useState(null);
   const [createStoryFormValues, setCreateStoryFormValues] = useState(null);
+  const [drawer, setDrawer] = useState(false);
 
   useEffect(() => {
     if (publishSettingsFormValues && createStoryFormValues && props.user.id) {
@@ -33,19 +35,35 @@ export const PublishForm = (props) => {
     }
   };
 
+  const toggleDrawer = () => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawer(!drawer);
+  };
+
   return (
-    <div>
+    <Box component="div"
+      role="presentation">
+
       <CreateStoryForm
         onSubmit={(values) => {
           setCreateStoryFormValues(values);
+          setDrawer(true);
         }}
       />
-      <PublishSettingsForm
-        onSubmit={(values) => {
-          setPublishSettingsFormValues(values);
-        }}
-        categories={props.categories}
-      />
-    </div>
+      <Drawer sx={{width: 250}} p={2} anchor='right' open={drawer} onClose={toggleDrawer()}>
+        <Box component="div">
+          <PublishSettingsForm
+            onSubmit={(values) => {
+              setPublishSettingsFormValues(values);
+            }}
+            title={createStoryFormValues ? createStoryFormValues.title: ''}
+            onClose={toggleDrawer()}
+            categories={props.categories}
+          />
+        </Box>
+      </Drawer>
+    </Box>
   );
 };

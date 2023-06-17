@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { Box, Typography } from "@mui/material";
 
 export const PublishSettingsForm = (props) => {
   const [categories, setCategories] = useState([]);
@@ -47,33 +48,41 @@ export const PublishSettingsForm = (props) => {
       validationSchema={validationSchema}
       onSubmit={props.onSubmit}
     >
-      <Form>
-        <label htmlFor="title">Title</label>
-        <Field name="title" type="text" />
-        <ErrorMessage name="title" component="div" />
-
-        <label htmlFor="category">Category</label>
-        <Field
-          name="category"
-          as="select"
-          component={SelectField}
-          options={categories}
-        />
-        <ErrorMessage name="category" component="div" />
-
-        <label htmlFor="tags">Tags</label>
-        <Field name="tags" type="text" />
-        <ErrorMessage name="tags" component="div" />
-
-        <label htmlFor="visibility">Visibility</label>
-        <Field name="visibility" as="select">
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </Field>
-        <ErrorMessage name="visibility" component="div" />
-
-        <button type="button">Cancel</button>
-        <button type="submit">Publish</button>
+      <Form style={{width: '90%', padding: '20px', margin: 'auto'}}>
+        <Typography variant="h4" pb={2}>Publishing Settings</Typography>
+        <Box component="div" sx={{display: 'inline-grid', width: '100%'}} pb={1}>
+          <label htmlFor="title" style={{marginBottom: 4}}>TITLE:</label>
+          <Field name="title" type="text" value={props.title}/>
+          <ErrorMessage name="title" component="div" />
+        </Box>
+        <Box component="div" sx={{display: 'inline-grid', width: '100%',}} pb={1}>
+          <label htmlFor="category" style={{marginBottom: 4}}>CATEGORY:</label>
+          <Field
+            name="category"
+            as="select"
+            component={SelectField}
+            options={categories}
+          />
+          <ErrorMessage name="category" component="div" />
+        </Box>
+        <Box component="div" sx={{display: 'inline-grid', width: '100%'}} pb={1}>
+          <label htmlFor="tags" style={{marginBottom: 4}}>TAGS:</label>
+          <Field name="tags" type="text" />
+          <ErrorMessage name="tags" component="div" />
+        </Box>
+        <Box component="div" sx={{display: 'inline-grid', width: '100%'}} pb={1}>
+          <label htmlFor="visibility" style={{marginBottom: 4}}>VISIBILITY:</label>
+          <Field name="visibility" as="select">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </Field>
+          <ErrorMessage name="visibility" component="div" />
+        </Box>
+        <Box component="div" sx={{position: 'fixed', bottom: 0, right: 0}} pb={1}>
+          <button type="button" onClick={props.onClose}
+            style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: 'transparent', padding: '5px 15px', borderRadius: 4, color: '#1976d2'}}>Cancel</button>
+          <button type="submit" style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: '#1976d2', color: 'white', padding: '5px 15px', borderRadius: 4}}>Publish</button>
+        </Box>
       </Form>
     </Formik>
   );
