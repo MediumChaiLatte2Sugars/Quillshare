@@ -48,6 +48,16 @@ router.get("/:id", async (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+// GET user name by id
+router.get("/:userId/name", async (req, res) => {
+  const userId = req.params.userId;
+  Users.findById(userId)
+    .then((user) => {
+      res.send(user[0].username);
+    })
+    .catch((err) => console.log("err:", err));
+});
+
 /***
  *
  *  User Feeds
@@ -131,7 +141,6 @@ router.get("/:userId/story/likes", (req, res) => {
   const userId = req.params.userId;
   const storyId = req.query.story_id;
 
-  console.log("GET USER SPEC STORY Story id: ", storyId);
   Likes.findOne({
     user_id: userId,
     story_id: storyId,
@@ -203,7 +212,7 @@ router.put("/:userId/saved-stories/:id", (req, res) => {
 router.delete("/:userId/saved-stories/:bookmarkId", (req, res) => {
   const userId = req.params.userId;
   const bookmarkId = req.params.bookmarkId;
-  
+
   SavedStories.destroy(bookmarkId)
     .then(() => res.sendStatus(204))
     .catch((err) => console.log('err:', err))
@@ -216,7 +225,6 @@ router.put("/:id", (req, res) => {
 
   Users.update(userId, props)
     .then((users) => {
-      console.log(users);
       res.send(users);
     })
     .catch((err) => console.log("err:", err));
