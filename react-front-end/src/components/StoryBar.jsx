@@ -1,15 +1,12 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Skeleton from '@mui/material/Skeleton';
+import { AppBar, Box, Toolbar, IconButton, Typography, Skeleton, useScrollTrigger, Checkbox, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useScrollTrigger } from '@mui/material';
+import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment } from "@mui/icons-material";
+import axios from 'axios';
+
 
 const StyledAppBar = styled(AppBar)(({ theme, scrolled }) => ({
   transition: 'height 0.5s',
@@ -25,7 +22,95 @@ const StyledToolbar = styled(Toolbar)({
   justifyContent: 'space-between',
 });
 
-export default function StoryBar({story, author}) {
+export default function StoryBar({story, author, user}) {
+
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleBookmark = async () => {
+    try {
+      const response = await axios.post(`/api/users/${user.id}/saved-stories`, {
+        story_id: story.id,
+        user_id: user.id,
+      });
+      setIsBookmarked(response.data[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnbookmark = async () => {
+    try {
+      console.log("Saved story id before deleting: ", isBookmarked.id , "Bookmark: ", isBookmarked);
+      const response = await axios.delete(`/api/users/${user.id}/saved-stories/${isBookmarked.id}`);
+      console.log("Handle Unbookmark Response: ", response);
+      setIsBookmarked(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await axios.post("/api/likes", {
+        story_id: story.id,
+        user_id: user.id,
+      });
+      setIsLiked(response.data[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnlike = async () => {
+    try {
+      console.log("Like id before deleting: ", isLiked.id);
+      const response = await axios.delete(`/api/likes/${isLiked.id}`);
+      console.log("Handle UnLike Response: ", response.data);
+      setIsLiked(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchBookmarkStatus = async () => {
+      if (!isBookmarked){
+        try {
+          const response = await axios.get(`/api/users/${user.id}/saved-stories/${story.id}`);
+          const savedStories = response.data;
+          setIsBookmarked(savedStories ? savedStories : null);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+  
+    fetchBookmarkStatus();
+  
+    return () => {};
+  }, [isBookmarked]);
+
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      if (!isLiked){
+        try {
+          const response = await axios.get(`/api/users/${user.id}/story/likes?story_id=${story.id}`);
+
+          const result = response.data;
+          console.log("Use Effect Like Fetching Repsonse: ", result);
+          setIsLiked(result);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+  
+    fetchLikeStatus();
+  
+    return () => {};
+  }, [isLiked])
+
   const trigger = useScrollTrigger({
     threshold: 100, // Adjust the threshold value as per your requirement
   });
@@ -34,7 +119,7 @@ export default function StoryBar({story, author}) {
     <Box sx={{ flexGrow: 1 }}>
       <StyledAppBar position="fixed" scrolled={trigger}>
         <StyledToolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -42,24 +127,41 @@ export default function StoryBar({story, author}) {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h5" noWrap component="div">
             {story ? story.title :  <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} animation="wave" />}
           </Typography>
           <Typography variant="h5" noWrap component="div">
-            {author ? author.title :  <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} animation="wave" />}
+            {author ? `Author: ${author.name}` :  <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} animation="wave" />}
           </Typography>
-          <IconButton size="large" aria-label="search" color="inherit">
-            <SearchIcon />
+          
+          <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
+          <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
+            {isLiked ? <Checkbox
+              icon={<Favorite sx={{ color: "red" }} />}
+              checkedIcon={<Favorite sx={{ color: "red" }} />}
+            /> : <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite sx={{ color: "red" }} />}
+            />}
           </IconButton>
-          <IconButton
-            size="large"
-            aria-label="display more actions"
-            edge="end"
-            color="inherit"
+        </Tooltip>
+        <Tooltip title={isBookmarked ? "Remove from Saved Stories" : "Add to Saved Stories"}>
+          <IconButton 
+            aria-label="LibraryAdd" 
+            onClick={isBookmarked ? handleUnbookmark : handleBookmark}
           >
-            <MoreIcon />
-          </IconButton>
+             {isBookmarked ? 
+            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
+          </IconButton> 
+        </Tooltip>
+        <IconButton aria-label="ModeComment">
+          <ModeComment />
+        </IconButton>
+        <IconButton aria-label="share">
+          <Share />
+        </IconButton>
+
         </StyledToolbar>
       </StyledAppBar>
     </Box>

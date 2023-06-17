@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import SavedStoryList from "./SavedStoryList";
 import StoryBar from './StoryBar';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { EditorState, convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
@@ -28,18 +29,49 @@ const SingleStory = () => {
 
   const [mode, setMode] = useState("light");
   const [story, setStory] = useState(null);
+  const [author, setAuthor] = useState(null);
+  const [userObject, setUserObject] = useState(null);
+  const { isAuthenticated, user } = useAuth0();
 
   useEffect(() => {
     async function fetchData() {
       try {
-          const response = await axios.get(`/api/stories/${routeParams.id}`);
-          return setStory(response.data[0]);
+          const storyResponse = await axios.get(`/api/stories/${routeParams.id}`);
+          const authorResponse = await axios.get(`/api/users/${storyResponse.data[0].user_id}/name`);
+          setAuthor({name: authorResponse.data, id: storyResponse.data[0].user_id});
+          return setStory(storyResponse.data[0]);
         } catch (err){
         console.error(err);
       }
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated){
+
+      const fetchData = async (user) => {
+
+        try {
+
+          const getUsers = await axios.get(`/api/users`);
+          const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
+          return setUserObject(filteredUser);
+
+          } catch (err) {
+          console.error(err)
+          return () => {};
+        }
+        
+      }
+
+      fetchData(user);
+      
+    } else {
+      return setUserObject(null);
+    }
+
+  }, [isAuthenticated, userObject]);
 
   const darkTheme = createTheme({
     palette: {
@@ -50,7 +82,7 @@ const SingleStory = () => {
   return (
 
     <ThemeProvider theme={darkTheme}>
-      {story ? <StoryBar /> : <CircularProgress size={20} color="inherit" /> }
+      {story && author ? <StoryBar story={story} author={author} user={userObject}/> : <CircularProgress size={20} color="inherit" /> }
       <Box>
         <Stack direction="row" spacing={2} justifyContent="center">
        
