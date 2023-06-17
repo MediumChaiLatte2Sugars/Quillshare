@@ -7,6 +7,7 @@ const selectableProps = [
   'id',
   'user_id',
   'category_id',
+  'unique_id',
   'title',
   'content',
   'status',

@@ -1,6 +1,7 @@
 const Express = require('express');
 const router = Express.Router();
 const { Stories, StoryCategories, Comments, Likes } = require('../models')
+const { v4: uuidv4 } = require('uuid');
 
 // GET all stories ------ /api/stories
 router.get('/', (req, res) => {
@@ -50,7 +51,7 @@ router.put('/:id', (req, res) => {
 
 // POST a new story -----   /api/stories
 router.post('/', (req, res) => {
-  const props = req.body
+  const props = {...req.body, unique_id: uuidv4()}
   Stories.create(props)
     .then(story => {
       const params = {
