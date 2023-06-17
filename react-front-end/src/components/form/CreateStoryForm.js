@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { EditorState, convertToRaw } from "draft-js";
 import * as Yup from "yup";
 import MyEditor from "./MyEditor";
+import { Box } from "@mui/material";
 
 // Custom validator ensuring the editor has text
 const editorRequired = (editorState) => {
@@ -15,22 +16,6 @@ const editorRequired = (editorState) => {
 };
 
 export const CreateStoryForm = (props) => {
-
-  // Function to handle form submission
-  const handleSubmit = (values) => {
-    const contentState = values.editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
-
-     // Update the values object with the rawContentState
-     const updatedValues = {
-      ...values,
-      editorState: rawContentState,
-    };
-
-    // Call the onSubmit prop to continue with the form submission
-    props.onSubmit(updatedValues);
-  };
-
   return (
     <Formik
       //! Image field left out for now to plan out implementation details further
@@ -48,26 +33,30 @@ export const CreateStoryForm = (props) => {
             editorRequired
           ),
       })}
-      onSubmit={handleSubmit}
+      onSubmit={props.onSubmit}
     >
       {({ values, setFieldValue, handleBlur }) => (
-        <Form>
-          <label htmlFor="title">Title of the Story</label>
-          <Field name="title" type="text" />
-          <ErrorMessage name="title" />
-
-          <label htmlFor="editorState">Content</label>
-          <MyEditor
-            editorState={values.editorState}
-            onChange={
-              (editorState) => setFieldValue("editorState", editorState) // Update the editor state
-            }
-            onBlur={handleBlur}
-          />
-          <ErrorMessage name="editorState" />
-
-          <button type="button">Save</button>
-          <button type="submit">Publish</button>
+        <Form style={{width: '70%', padding: '20px', margin: 'auto'}}>
+          <Box component="div" sx={{display: 'inline-grid', textAlign: 'center', width: '100%'}}>
+            <label htmlFor="title" style={{padding: '10px'}}>Title</label>
+            <Field name="title" type="text" style={{border: '1px solid #ddd;'}} />
+            <ErrorMessage name="title" />
+          </Box>
+          <Box component="div" style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
+            <label htmlFor="editorState" style={{padding: '10px', textAlign: 'center'}}>Content</label>
+            <MyEditor
+              editorState={values.editorState}
+              onChange={
+                (editorState) => setFieldValue("editorState", editorState) // Update the editor state
+              }
+              onBlur={handleBlur}
+            />
+            <ErrorMessage name="editorState" />
+          </Box>
+          <Box component="div" style={{textAlign: 'right'}}>
+            <button type="button" style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: 'transparent', padding: '5px 15px', borderRadius: 4, color: '#1976d2'}}>Save</button>
+            <button type="submit" style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: '#1976d2', color: 'white', padding: '5px 15px', borderRadius: 4}}>Publish</button>
+          </Box>
         </Form>
       )}
     </Formik>
