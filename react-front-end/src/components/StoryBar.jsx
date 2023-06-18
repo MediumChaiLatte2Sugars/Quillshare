@@ -4,8 +4,9 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Skeleton, useScrollTrigge
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Favorite, FavoriteBorder, Share , LibraryAdd ,ModeComment } from "@mui/icons-material";
+import { Favorite, FavoriteBorder , LibraryAdd ,ModeComment } from "@mui/icons-material";
 import axios from 'axios';
+import CopyableShareTooltip from './StoryLinkShare';
 
 
 const StyledAppBar = styled(AppBar)(({ theme, scrolled }) => ({
@@ -22,10 +23,11 @@ const StyledToolbar = styled(Toolbar)({
   justifyContent: 'space-between',
 });
 
-export default function StoryBar({story, author, user}) {
+export default function StoryBar({story, author, user, link}) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleBookmark = async () => {
     try {
@@ -158,9 +160,8 @@ export default function StoryBar({story, author, user}) {
         <IconButton aria-label="ModeComment">
           <ModeComment />
         </IconButton>
-        <IconButton aria-label="share">
-          <Share />
-        </IconButton>
+        {/* Insert CopyableShareButtonHere */}
+        <CopyableShareTooltip link={link}/>
 
         </StyledToolbar>
       </StyledAppBar>

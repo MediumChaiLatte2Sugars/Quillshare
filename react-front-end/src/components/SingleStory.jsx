@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Box, Stack ,Skeleton, createTheme ,ThemeProvider, CircularProgress } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import SavedStoryList from "./SavedStoryList";
 import StoryBar from './StoryBar';
 import axios from 'axios';
@@ -22,6 +22,7 @@ const convertStoryToRaw = (content) => {
 
 const SingleStory = () => {
   const routeParams = useParams();
+  const storyLocation = useLocation();
   const [loading, setLoading] = useState(true);
   setTimeout(() => {
     setLoading(false);
@@ -82,7 +83,7 @@ const SingleStory = () => {
   return (
 
     <ThemeProvider theme={darkTheme}>
-      {story && author ? <StoryBar story={story} author={author} user={userObject}/> : <CircularProgress size={20} color="inherit" /> }
+      {story && author ? <StoryBar story={story} author={author} user={userObject} link={`${window.location.href}`}/> : <CircularProgress size={20} color="inherit" /> }
       <Box>
         <Stack direction="row" spacing={2} justifyContent="center">
        
