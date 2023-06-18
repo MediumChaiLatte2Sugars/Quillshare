@@ -22,7 +22,6 @@ exports.up = function(knex) {
       table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
       table.integer('category_id').unsigned().notNullable();
       table.foreign('category_id').references('id').inTable('categories').onDelete('CASCADE').onUpdate('CASCADE');
-      table.string('unique_id').notNullable();
       table.string('title');
       table.text('content');
       table.string('status').defaultTo('draft');
