@@ -133,35 +133,44 @@ export default function StoryBar({story, author, user, link}) {
           <Typography variant="h5" noWrap component="div">
             {story ? story.title :  <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} animation="wave" />}
           </Typography>
+
           <Typography variant="h5" noWrap component="div">
             {author ? `Author: ${author.name}` :  <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} animation="wave" />}
           </Typography>
           
           <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
-          <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
-            {isLiked ? <Checkbox
-              icon={<Favorite sx={{ color: "red" }} />}
-              checkedIcon={<Favorite sx={{ color: "red" }} />}
-            /> : <Checkbox
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite sx={{ color: "red" }} />}
-            />}
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={isBookmarked ? "Remove from Saved Stories" : "Add to Saved Stories"}>
-          <IconButton 
-            aria-label="LibraryAdd" 
-            onClick={isBookmarked ? handleUnbookmark : handleBookmark}
-          >
-             {isBookmarked ? 
-            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
-          </IconButton> 
-        </Tooltip>
-        <IconButton aria-label="ModeComment">
-          <ModeComment />
-        </IconButton>
-        {/* Insert CopyableShareButtonHere */}
-        <CopyableShareTooltip link={link}/>
+            <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
+              {isLiked ? <Checkbox
+                icon={<Favorite sx={{ color: "red" }} />}
+                checkedIcon={<Favorite sx={{ color: "red" }} />}
+              /> : <Checkbox
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite sx={{ color: "red" }} />}
+              />}
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={isBookmarked ? "Remove from Saved Stories" : "Add to Saved Stories"}>
+            <IconButton 
+              aria-label="LibraryAdd" 
+              onClick={isBookmarked ? handleUnbookmark : handleBookmark}
+            >
+              {isBookmarked ? 
+              <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
+            </IconButton> 
+          </Tooltip>
+
+          <Tooltip title="Comments" >
+            <IconButton aria-label="ModeComment">
+              <ModeComment />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Share Story">
+            <div>
+              <CopyableShareTooltip link={link}/>
+            </div>
+          </Tooltip>
 
         </StyledToolbar>
       </StyledAppBar>

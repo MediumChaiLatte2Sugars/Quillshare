@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Box, Stack ,Skeleton, createTheme ,ThemeProvider, CircularProgress } from "@mui/material";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SavedStoryList from "./SavedStoryList";
 import StoryBar from './StoryBar';
 import axios from 'axios';
@@ -22,7 +22,6 @@ const convertStoryToRaw = (content) => {
 
 const SingleStory = () => {
   const routeParams = useParams();
-  const storyLocation = useLocation();
   const [loading, setLoading] = useState(true);
   setTimeout(() => {
     setLoading(false);
@@ -37,10 +36,10 @@ const SingleStory = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-          const storyResponse = await axios.get(`/api/stories/${routeParams.id}`);
-          const authorResponse = await axios.get(`/api/users/${storyResponse.data[0].user_id}/name`);
-          setAuthor({name: authorResponse.data, id: storyResponse.data[0].user_id});
-          return setStory(storyResponse.data[0]);
+          const storyResponse = await axios.get(`/api/stories/id/${routeParams.id}`);
+          const authorResponse = await axios.get(`/api/users/${storyResponse.data.user_id}/name`);
+          setAuthor({name: authorResponse.data, id: storyResponse.data.user_id});
+          return setStory(storyResponse.data);
         } catch (err){
         console.error(err);
       }

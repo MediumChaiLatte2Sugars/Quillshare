@@ -216,7 +216,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         
      
 
-        { story ? <Link to={`/story/${story.id}`} style={{ textDecoration: 'none' }}>
+        { story ? <Link to={`/story/${story.unique_id}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" size="small">
             Let's Read
           </Button>

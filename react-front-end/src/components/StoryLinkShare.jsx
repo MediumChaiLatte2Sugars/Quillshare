@@ -26,9 +26,7 @@ const ShareButton = ({ link }) => {
         onClose={handleSnackbarClose}
         message="Link copied to clipboard"
         action={
-          <IconButton size="small">
-            <FileCopy sx={{ color: 'white' }}/>
-          </IconButton>
+          <FileCopy sx={{ color: 'white' }}/>
         }
       />
     </>
