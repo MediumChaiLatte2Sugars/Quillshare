@@ -91,6 +91,18 @@ const SavedStoryList = ({story, author, currentViewer}) => {
     }
   };
 
+  const formatDate = (date) => {
+    const dateObject = new Date(date);
+
+    const formattedDate = dateObject.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  
+    return formattedDate;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -154,7 +166,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         }
 
         title={user ? user.username : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
-        subheader={story ? story.created_at :  <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+        subheader={story ? formatDate(story.created_at) :  <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
 
 
       />
