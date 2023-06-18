@@ -16,6 +16,22 @@ const editorRequired = (editorState) => {
 };
 
 export const CreateStoryForm = (props) => {
+
+    // Function to handle form submission
+    const handleSubmit = (values) => {
+      const contentState = values.editorState.getCurrentContent();
+      const rawContentState = convertToRaw(contentState);
+  
+       // Update the values object with the rawContentState
+       const updatedValues = {
+        ...values,
+        editorState: rawContentState,
+      };
+  
+      // Call the onSubmit prop to continue with the form submission
+      props.onSubmit(updatedValues);
+    };
+
   return (
     <Formik
       //! Image field left out for now to plan out implementation details further
@@ -33,7 +49,7 @@ export const CreateStoryForm = (props) => {
             editorRequired
           ),
       })}
-      onSubmit={props.onSubmit}
+      onSubmit={handleSubmit}
     >
       {({ values, setFieldValue, handleBlur }) => (
         <Form style={{width: '70%', padding: '20px', margin: 'auto'}}>
