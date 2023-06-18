@@ -65,6 +65,7 @@ router.post("/", async (req, res) => {
       content: JSON.stringify(props.editorState),
       status: "published",
       type: props.visibility,
+      unique_id: props.unique_id,
     };
 
     console.log(storyData);
