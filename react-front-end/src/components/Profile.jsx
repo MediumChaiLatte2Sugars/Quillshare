@@ -39,8 +39,7 @@ const Profile = () => {
 
         const fetchData = async (user) => {
 
-          try {
-            
+          try { 
             
             if (userObject){
 
