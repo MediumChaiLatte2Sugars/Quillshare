@@ -35,6 +35,25 @@ router.get("/:id", (req, res) => {
   //   .catch((err) => console.log("err:", err));
 });
 
+// GET a single story by unique_id ------ /api/stories/:id
+router.get("/id/:uniqueId", (req, res) => {
+  const storyUniqueId = req.params.uniqueId;
+  Stories.findOne({unique_id: storyUniqueId})
+    .then((story) => {
+      res.send(story);
+    })
+    .catch((err) => console.log('err:', err));
+  // Likes.findAll()
+  //   .then((story) => {
+  //     const data = {
+  //       story,
+  //       message: "Get all story",
+  //     };
+  //     res.send(data);
+  //   })
+  //   .catch((err) => console.log("err:", err));
+});
+
 // UPDATE a story by id -----  /api/stories/:id
 router.put("/:id", (req, res) => {
   const storyId = req.params.id;
