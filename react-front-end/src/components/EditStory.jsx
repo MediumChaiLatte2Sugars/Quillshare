@@ -1,0 +1,46 @@
+import * as React from 'react';
+import {Box, Stack , createTheme ,ThemeProvider } from "@mui/material";
+import { useState, useEffect } from "react";
+
+import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
+import EditStoryForm from './form/EditStoryForm';
+import { useParams } from "react-router-dom";
+
+const EditStory = () => {
+  const routeParams = useParams();
+  const { isAuthenticated, user } = useAuth0();
+  const [userObject, setUserObject] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated){
+
+      const fetchData = async (user) => {
+
+        try {
+          
+          const getUsers = await axios.get(`/api/users`);
+          const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
+          setUserObject(filteredUser);
+
+        } catch (err) {
+          console.error(err)
+        }
+        
+      }
+
+      fetchData(user);
+      
+    }
+
+  }, [isAuthenticated]);
+
+    return (
+      <>
+      {/* Verify the user is signed in and exists in the db before allowing story creation */}
+      {isAuthenticated && userObject ? <EditStoryForm user={userObject} routeParams={routeParams}/> : <h4>Please sign in to edit a story!</h4>}
+      </>
+    );
+};
+  
+export default EditStory;

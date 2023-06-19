@@ -3,7 +3,6 @@ import { PublishSettingsForm } from "./PublishSettingsForm";
 import { CreateStoryForm } from "./CreateStoryForm";
 import axios from "axios";
 import { Drawer, Box, CircularProgress } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useAuth0 } from '@auth0/auth0-react';
 import { EditorState, convertFromRaw } from 'draft-js';
 
@@ -17,9 +16,7 @@ const extractEditorState = (content) => {
 }
 
 export default function EditStoryForm(props) {
-  const routeParams = useParams();
   const { isAuthenticated, user } = useAuth0();
-
   const [publishSettingsFormValues, setPublishSettingsFormValues] = useState(null);
   const [createStoryFormValues, setCreateStoryFormValues] = useState(null);
   const [drawer, setDrawer] = useState(false);
@@ -29,8 +26,8 @@ export default function EditStoryForm(props) {
   useEffect(() => {
     async function fetchData(){
       if (!story) {
-        console.log("Route params id: ", routeParams.uniqueId);
-        const storyResponse = await axios.get(`/api/stories/id/${routeParams.uniqueId}`);
+        console.log("Route params id: ", props.routeParams.uniqueId);
+        const storyResponse = await axios.get(`/api/stories/id/${props.routeParams.uniqueId}`);
         const authorResponse = await axios.get(`/api/users/${storyResponse.data.user_id}/email`);
         console.log("Author response: ", authorResponse);
         console.log("Story response: ", storyResponse);
@@ -77,7 +74,7 @@ export default function EditStoryForm(props) {
 
   return (
     <>
-      {isAuthenticated && user && author && user.email === author ? (
+      {user && author && user.email === author ? (
         <Box component="div" role="presentation">
           {story ? (
             <>

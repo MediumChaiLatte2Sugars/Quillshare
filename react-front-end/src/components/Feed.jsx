@@ -22,8 +22,8 @@ const Feed = () => {
   return (
 
     <ThemeProvider theme={darkTheme}>
-      <Box>
-        <Stack direction="row" spacing={2} justifyContent="space-between">
+      <Box> Placeholder text
+        {/* <Stack direction="row" spacing={2} justifyContent="space-between">
           <Sidebar setMode={setMode} mode={mode}/>
        
           <Box flex={4} p={{ xs: 0, md: 2 }}>
@@ -50,7 +50,7 @@ const Feed = () => {
           </Box>
 
            <Rightbar />
-        </Stack>
+        </Stack> */}
 
        </Box>
    </ThemeProvider>

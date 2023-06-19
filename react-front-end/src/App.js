@@ -12,7 +12,7 @@ import CategoryStory from "./components/CategoryStory";
 import CreateStory from "./components/CreateStory"
 import Profile from './components/Profile';
 import SingleStory from './components/SingleStory';
-import EditStoryForm from './components/form/EditStoryForm';
+import EditStory from './components/EditStory';
 
 // import { withAuth0 } from "@auth0/auth0-react";
 
@@ -40,7 +40,7 @@ class App extends Component {
       <Route path="/createstory" element={<CreateStory /> } />
       <Route path="/profile" element={<Profile /> } />
       <Route path="/story/:id" element={<SingleStory />} />
-      <Route path="/edit/:uniqueId" element={<EditStoryForm />} />
+      <Route path="/edit/:uniqueId" element={<EditStory />} />
      </Routes>
     </Box>
   
