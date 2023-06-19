@@ -8,6 +8,7 @@ import { stateToHTML } from 'draft-js-export-html';
 
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
+import { filter } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 const convertStoryToRaw = (content) => {
   // Convert the editorState back to an object
@@ -25,6 +26,8 @@ const Profile = (props) => {
   const { isAuthenticated, user } = useAuth0();
   const [userObject, setUserObject] = useState(null);
   const [userStories, setUserStories] = useState(null);
+  const [currentViewer, setCurrentViewer] = useState(null);
+  const [isFollowed, setIsFollowed] = useState(null);
 
 
 
@@ -33,6 +36,24 @@ const Profile = (props) => {
       mode: mode,
     },
     });
+
+    useEffect(() => {
+      if ( isAuthenticated && user) {
+        console.log("Auth successfull: ", isAuthenticated, user);
+        const fetchData = async (user) => {
+          try {
+            const getUsers = await axios.get(`/api/users`);
+            const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
+            console.log("Setting current viewer: ", filteredUser);
+            setCurrentViewer(filteredUser);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        fetchData(user);
+      }
+    }, [isAuthenticated, user]);
 
     useEffect(() => {
       if (props.otherUser){
@@ -105,13 +126,64 @@ const Profile = (props) => {
 
     }, [isAuthenticated, userObject, userStories]);
 
+    useEffect(() => {
+      const fetchFollowStatus = async () => {
+        if (!isFollowed) {
+          try {
+            const queryParams = {
+              user2: userObject.id,
+              user1: currentViewer.id
+            };
+            
+            const response = await axios.get(`/api/subscriptions/check`, { params: queryParams });
+            console.log("Fetching follower status res: ", response);
+            setIsFollowed(response.data.subs[0]);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      };
+  
+      fetchFollowStatus(); // Call the fetchFollowStatus function
+    }, [isFollowed]);
+
+    const handleFollow = async () => {
+      try {
+        const response = await axios.post(`/api/subscriptions/`, {
+          user1: currentViewer.id,
+          user2: userObject.id,
+        });
+        console.log("Handle follow res: ", response);
+        alert("User successfully followed!");
+        setIsFollowed(response.data[0]);
+      } catch (err) {
+        console.error(err);
+        alert("An error occurred while following this user.");
+      }
+    };
+  
+    const handleUnFollow = async () => {
+      try {
+        const response = await axios.delete(`/api/subscriptions/${isFollowed.id}`, {
+          user1: currentViewer.id,
+          user2: userObject.id,
+        });
+        console.log("Handle follow res: ", response);
+        setIsFollowed(null);
+        alert("User successfully unfollowed!");
+      } catch (err) {
+        console.error(err);
+        alert("An error occurred while unfollowing this user.");
+      }
+    };
+
     return (
 
       <ThemeProvider theme={darkTheme}>
         <Box>
 
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          {user && userObject ? <ProfileSidebar setMode={setMode} mode={mode} user={userObject} viewerIsSelf={user.email === userObject.email}/> : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
+          {user && userObject ? <ProfileSidebar setMode={setMode} mode={mode} user={userObject} viewerIsSelf={user.email === userObject.email} currentViewer={currentViewer} handleFollow={handleFollow} handleUnFollow={handleUnFollow} isFollowed={isFollowed}/> : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
            
            <Box flex={4} p={{ xs: 0, md: 2 }}>
 
