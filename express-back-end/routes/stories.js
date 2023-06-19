@@ -57,9 +57,14 @@ router.get("/id/:uniqueId", (req, res) => {
 // UPDATE a story by id -----  /api/stories/:id
 router.put("/:id", (req, res) => {
   const storyId = req.params.id;
-  const props = req.body.story;
-  console.log(req.body);
-  Stories.update(storyId, props)
+  const props = req.body;
+  const { category, ...rest } = props;
+  const modifiedProps = { category_id: category, ...rest };
+  console.log("Modded Props: ", modifiedProps);
+  console.log("Req.body: ", req.body);
+  console.log("storyId: ", storyId);
+
+  Stories.update(storyId, modifiedProps)
     .then((story) => {
       console.log(story);
       res.send(story);
