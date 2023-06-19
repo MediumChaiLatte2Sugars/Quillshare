@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Favorite, FavoriteBorder, LibraryAdd, ModeComment } from "@mui/icons-material";
 import axios from 'axios';
-import CopyableShareTooltip from './StoryLinkShare';
+import ShareButton from './StoryLinkShare'; 
 import StoryComments from './StoryComments';
 import CommentForm from './form/CommentForm';
 
@@ -181,7 +181,7 @@ export default function StoryBar({story, author, user, link}) {
 
           <Tooltip title="Share Story">
             <div>
-              <CopyableShareTooltip link={link}/>
+              <ShareButton link={link}/>
             </div>
           </Tooltip>
 

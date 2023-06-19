@@ -15,6 +15,7 @@ import {
   CircularProgress,
   Tooltip
 } from "@mui/material";
+import ShareButton from './StoryLinkShare';
 
 import { Link } from 'react-router-dom';
 
@@ -210,9 +211,14 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         <IconButton aria-label="ModeComment">
           <ModeComment />
         </IconButton>
-        <IconButton aria-label="share">
+        {/* <IconButton aria-label="share">
           <Share />
-        </IconButton>
+        </IconButton> */}
+        <Tooltip title="Share Story">
+            <div>
+              <ShareButton link={`${window.location.protocol}//${window.location.host}/story/id/${story.unique_id}`}/>
+            </div>
+        </Tooltip>
         
      
 
