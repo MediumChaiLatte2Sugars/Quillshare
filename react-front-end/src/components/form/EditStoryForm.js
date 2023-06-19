@@ -44,10 +44,24 @@ export default function EditStoryForm(props) {
   }, [publishSettingsFormValues, createStoryFormValues, props.user]);
 
   // Obtain story Data
+  const isFormValuesValid = (values) => {
+    for (const key in values) {
+      if (values[key] === null) {
+        return false;
+      }
+    }
+    return true;
+  };
+
 
   const handleSubmit = async () => {
     try {
-      // Make a POST request to /api/stories with the combined form values
+      if (!isFormValuesValid(publishSettingsFormValues)) {
+        alert("Please fill in all fields before submitting.");
+        return;
+      }
+
+      // Make a PUT request to /api/stories with the combined form values
       const combinedValues = {
         ...publishSettingsFormValues,
         ...createStoryFormValues,

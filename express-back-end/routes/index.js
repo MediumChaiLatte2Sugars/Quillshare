@@ -9,5 +9,6 @@ router.use('/tags', require('./tags'));
 router.use('/messages', require('./messages'));
 router.use('/notifications', require('./notifications'));
 router.use('/likes', require('./likes'));
+router.use('/subscriptions', require('./subscriptions'));
 
 module.exports = router;

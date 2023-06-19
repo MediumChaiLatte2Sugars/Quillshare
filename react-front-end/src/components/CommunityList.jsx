@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Card,
@@ -6,41 +6,105 @@ import {
   CardContent,
   CardHeader,
   Typography,
+  Skeleton
 } from "@mui/material";
-const CommunityList = () => {
+import axios from 'axios';
+
+const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
+  const [isFollowed, setIsFollowed] = useState(null);
+
+  useEffect(() => {
+    const fetchFollowStatus = async () => {
+      if (!isFollowed) {
+        try {
+          const queryParams = {
+            user2: user.id,
+            user1: currentViewer.id
+          };
+          
+          const response = await axios.get(`/api/subscriptions/check`, { params: queryParams });
+          console.log("Fetching follower status res: ", response);
+          setIsFollowed(response.data.subs[0]);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+
+    fetchFollowStatus(); // Call the fetchFollowStatus function
+  }, [isFollowed]);
+
+  const formatDate = (date) => {
+    const dateObject = new Date(date);
+    const formattedDate = dateObject.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    return formattedDate;
+  };
+
+  const handleFollow = async () => {
+    try {
+      const response = await axios.post(`/api/subscriptions/`, {
+        user1: currentViewer.id,
+        user2: user.id,
+      });
+      console.log("Handle follow res: ", response);
+      alert("User successfully followed!");
+      setIsFollowed(response.data[0]);
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while following this user.");
+    }
+  };
+
+  const handleUnFollow = async () => {
+    try {
+      const response = await axios.delete(`/api/subscriptions/${isFollowed.id}`, {
+        user1: currentViewer.id,
+        user2: user.id,
+      });
+      console.log("Handle follow res: ", response);
+      setIsFollowed(null);
+      alert("User successfully unfollowed!");
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while unfollowing this user.");
+    }
+  };
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            R
+            {user ? user.username.split("")[0] : <Skeleton variant="circular" width={48} height={48} />}
           </Avatar>
         }
-    
-        title="Jackson Johnson"
-        subheader="June 11, 2023"
+        title={user ? user.username : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+        subheader={user ? `Joined ${formatDate(user.created_at)}` : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
       />
 
-        <Typography variant="body2" color="Bold" fontSize={20}  sx={{ ml:2 }}>
-          Bio :
-        </Typography>
+      <Typography variant="body2" color="Bold" fontSize={20} sx={{ ml: 2 }}>
+        Bio:
+      </Typography>
 
-      
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
         </Typography>
-        <Button variant="contained" size="small"  >
+        <Button variant="contained" size="small">
           Visit Profile
         </Button>
-        <Button variant="contained" size="small" sx={{ ml:5 }} >
-          Follow
-        </Button>
+
+        {isAuthenticated && currentViewer && (
+          <Button variant="contained" size="small" sx={{ ml: 5 }} onClick={isFollowed ? handleUnFollow : handleFollow}>
+            {isFollowed ? "Unfollow" : "Follow"}
+          </Button>
+        )}
       </CardContent>
-     
-      
     </Card>
   );
 };
