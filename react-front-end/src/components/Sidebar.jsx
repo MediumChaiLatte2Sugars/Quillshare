@@ -57,7 +57,7 @@ import {
 
 
             <ListItem disablePadding >
-              <ListItemButton component="a" href="#simple-list">
+              <ListItemButton component={Link} to="/createstory">
                 <ListItemIcon>
                   <Article />
                 </ListItemIcon>
