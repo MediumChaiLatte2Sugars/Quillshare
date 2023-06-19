@@ -121,6 +121,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+// POST a new comment -----   /api/stories/:id/comments
+router.post('/:id/comments', (req, res) => {
+  const props = req.body;
+  Comments.create(props)
+    .then(comment => {
+      res.json({
+        ok: true,
+        message: 'Comment created',
+        comment
+      })
+    })
+    .catch((err) => console.log('err:', err))
+});
+
 // DELETE a story   ------   /api/stories/:id
 router.delete("/:id", (req, res) => {
   const storyId = req.params.id;
