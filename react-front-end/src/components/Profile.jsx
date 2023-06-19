@@ -89,7 +89,7 @@ const Profile = () => {
                   content: convertStoryToRaw(story.content), 
                 };
 
-                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} currentViewer={userObject.id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id}}/>;
+                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} currentViewer={userObject.id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id, unique_id: updatedStory.unique_id}}/>;
               }) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />
             }
             {/* <SavedStoryList />
