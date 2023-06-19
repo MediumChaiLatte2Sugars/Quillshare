@@ -14,26 +14,35 @@ import { Link } from 'react-router-dom';
 const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
   const [isFollowed, setIsFollowed] = useState(null);
 
+  const fetchFollowStatus = async () => {
+    try {
+      const queryParams = {
+        user2: user.id,
+        user1: currentViewer.id
+      };
+      
+      const response = await axios.get(`/api/subscriptions/check`, { params: queryParams });
+      console.log("Fetching follower status res: ", response);
+      setIsFollowed(response.data.subs[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchFollowStatus = async () => {
+    fetchFollowStatus(); // Call the fetchFollowStatus function
+  }, []);
+  
+  useEffect(() => {
+    const fetchFollowStatusOnChange = async () => {
       if (!isFollowed) {
-        try {
-          const queryParams = {
-            user2: user.id,
-            user1: currentViewer.id
-          };
-          
-          const response = await axios.get(`/api/subscriptions/check`, { params: queryParams });
-          console.log("Fetching follower status res: ", response);
-          setIsFollowed(response.data.subs[0]);
-        } catch (err) {
-          console.error(err);
-        }
+        fetchFollowStatus();
       }
     };
-
-    fetchFollowStatus(); // Call the fetchFollowStatus function
+  
+    fetchFollowStatusOnChange(); // Call the fetchFollowStatusOnChange function
   }, [isFollowed]);
+  
 
   const formatDate = (date) => {
     const dateObject = new Date(date);

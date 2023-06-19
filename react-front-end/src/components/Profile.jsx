@@ -127,7 +127,29 @@ const Profile = (props) => {
     }, [isAuthenticated, userObject, userStories]);
 
     useEffect(() => {
-      const fetchFollowStatus = async () => {
+      // Call the fetchFollowStatus function on component mount
+      fetchFollowStatus();
+    }, []);
+
+    const fetchFollowStatus = async () => {
+      if (!isFollowed) {
+        try {
+          const queryParams = {
+            user2: userObject.id,
+            user1: currentViewer.id
+          };
+          
+          const response = await axios.get(`/api/subscriptions/check`, { params: queryParams });
+          console.log("Fetching follower status res: ", response);
+          setIsFollowed(response.data.subs[0]);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    
+    useEffect(() => {
+      const fetchFollowStatusOnChange = async () => {
         if (!isFollowed) {
           try {
             const queryParams = {
@@ -143,9 +165,11 @@ const Profile = (props) => {
           }
         }
       };
-  
-      fetchFollowStatus(); // Call the fetchFollowStatus function
+    
+      // Call the fetchFollowStatusOnChange function whenever isFollowed changes
+      fetchFollowStatusOnChange();
     }, [isFollowed]);
+    
 
     const handleFollow = async () => {
       try {
