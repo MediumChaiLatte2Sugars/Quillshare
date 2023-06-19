@@ -22,16 +22,29 @@ const getUser = (username) => {
 };
 
 io.on("connection", (socket) => {
+  console.log("User has connnected");
+   io.emit ("test event", "Hi this is test msg.")
+
+
   socket.on("newUser", (username) => {
     addNewUser(username, socket.id);
   });
 
   socket.on("sendNotification", ({ senderName, receiverName, type }) => {
     const receiver = getUser(receiverName);
+    console.log("socket index: sendNotification ", receiver); 
     io.to(receiver.socketId).emit("getNotification", {
       senderName,
       type,
     });
+
+    
+
+    console.log("socket index : sender name ", senderName); 
+  
+    console.log("socket index : type ", type); 
+  
+
   });
 
   socket.on("sendText", ({ senderName, receiverName, text }) => {
@@ -43,8 +56,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    console.log("User has disconnected");
+  
     removeUser(socket.id);
   });
 });
 
-io.listen(5000);
+io.listen(3002);
