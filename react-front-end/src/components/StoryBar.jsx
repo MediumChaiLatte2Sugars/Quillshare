@@ -177,7 +177,7 @@ export default function StoryBar({story, author, user, link}) {
             </IconButton>
           </Tooltip>
           
-          <StoryComments open={openComments} onClose={handleCloseComments} children={<CommentForm />}/>
+          <StoryComments open={openComments} onClose={handleCloseComments} children={<CommentForm story={story.id} user={user.id}/>}/>
 
           <Tooltip title="Share Story">
             <div>

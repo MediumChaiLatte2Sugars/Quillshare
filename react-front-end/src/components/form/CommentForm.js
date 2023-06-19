@@ -2,21 +2,30 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { TextField, Button } from '@mui/material';
+import axios from 'axios';
+import { PropaneSharp } from '@mui/icons-material';
 
-const CommentForm = () => {
+const CommentForm = ({user, story}) => {
   const initialValues = {
-    user_id: '',
-    story_id: '',
-    comment: '',
+    user_id: user || '',
+    story_id: story || '',
+    content: '',
   };
 
   const validationSchema = yup.object().shape({
-    comment: yup.string().required('Comment cannot be empty'),
+    content: yup.string().required('Comment cannot be empty'),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log(values);
-    // Add your submit logic here
+    try {
+      const response = await axios.post(`/api/stories/${story.id}/comments`, values);
+      console.log("Comment response: ", response);
+      alert("Comment submitted successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while submitting the comment.")
+    }
   };
 
   const formik = useFormik({
@@ -29,16 +38,16 @@ const CommentForm = () => {
     <form onSubmit={formik.handleSubmit}>
 
       <TextField
-        id="comment"
-        name="comment"
+        id="content"
+        name="content"
         label="Comment"
         multiline
         rows={4}
-        value={formik.values.comment}
+        value={formik.values.content}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.comment && formik.errors.comment}
-        helperText={formik.touched.comment && formik.errors.comment}
+        error={formik.touched.content && formik.errors.content}
+        helperText={formik.touched.content && formik.errors.content}
       />
 
       <Button type="submit">Submit</Button>
