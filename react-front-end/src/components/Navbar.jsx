@@ -284,7 +284,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <MenuItem >Saved Stories</MenuItem>
               <MenuItem>Stories</MenuItem>
-              <MenuItem onClick={() => logout({ returnTo: window.location.origin })}>Logout</MenuItem>
+              <MenuItem onClick={() => logout({ returnTo: `${window.location.protocol}//${window.location.host}/homepage` })}>Logout</MenuItem>
              </Menu>
           </Box>}
           

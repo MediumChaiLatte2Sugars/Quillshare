@@ -15,8 +15,9 @@ ReactDOM.render(
   domain="dev-2jggyfjpths0o6ur.us.auth0.com"
   clientId="kERHuWD6o8BOtyhWE2xSQCEPa9KPhnGq"
   authorizationParams={{
-    redirect_uri: window.location.origin
+    redirect_uri: `${window.location.protocol}//${window.location.host}/feed`
   }}
+  logoutUrl={`${window.location.protocol}//${window.location.host}/homepage`}
   cacheLocation="localstorage"
 >
 <App />
