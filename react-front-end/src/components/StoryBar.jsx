@@ -4,9 +4,11 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Skeleton, useScrollTrigge
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Favorite, FavoriteBorder , LibraryAdd ,ModeComment } from "@mui/icons-material";
+import { Favorite, FavoriteBorder, LibraryAdd, ModeComment } from "@mui/icons-material";
 import axios from 'axios';
 import CopyableShareTooltip from './StoryLinkShare';
+import StoryComments from './StoryComments';
+import CommentForm from './form/CommentForm';
 
 
 const StyledAppBar = styled(AppBar)(({ theme, scrolled }) => ({
@@ -28,6 +30,7 @@ export default function StoryBar({story, author, user, link}) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [openComments, setOpenComments] = useState(false);
 
   const handleBookmark = async () => {
     try {
@@ -74,6 +77,14 @@ export default function StoryBar({story, author, user, link}) {
       console.error(err);
     }
   };
+
+  const handleCommentButton = () => {
+    setOpenComments(true);
+  }
+
+  const handleCloseComments = () => {
+    setOpenComments(false);
+  }
 
   useEffect(() => {
     const fetchBookmarkStatus = async () => {
@@ -161,10 +172,12 @@ export default function StoryBar({story, author, user, link}) {
           </Tooltip>
 
           <Tooltip title="Comments" >
-            <IconButton aria-label="ModeComment">
-              <ModeComment />
+            <IconButton aria-label="ModeComment" onClick={handleCommentButton}>
+              <ModeComment/>
             </IconButton>
           </Tooltip>
+          
+          <StoryComments open={openComments} onClose={handleCloseComments} children={<CommentForm />}/>
 
           <Tooltip title="Share Story">
             <div>

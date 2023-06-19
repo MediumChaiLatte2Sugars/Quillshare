@@ -38,6 +38,8 @@ const SingleStory = () => {
       try {
           const storyResponse = await axios.get(`/api/stories/id/${routeParams.id}`);
           const authorResponse = await axios.get(`/api/users/${storyResponse.data.user_id}/name`);
+          console.log("Author response: ", authorResponse);
+          console.log("Story Response: ", storyResponse)
           setAuthor({name: authorResponse.data, id: storyResponse.data.user_id});
           return setStory(storyResponse.data);
         } catch (err){
