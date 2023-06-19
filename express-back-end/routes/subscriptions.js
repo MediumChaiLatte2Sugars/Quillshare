@@ -15,4 +15,13 @@ router.get("/", (req, res) => {
   .catch((err) => console.log('err:', err))
 });
 
+// POST new subscription ------ /api/subscriptions
+router.post("/", (req, res) => {
+  Subscriptions.create(req.body)
+  .then((sub) => {
+    res.status(200).json("Subscription created successfully")
+  })
+  .catch((err) => res.status(500).json({ error: err }));
+});
+
 module.exports = router;
