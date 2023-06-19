@@ -215,9 +215,9 @@ const SavedStoryList = ({story, author, currentViewer}) => {
           <Share />
         </IconButton> */}
         <Tooltip title="Share Story">
-            <div>
+            <span>
               <ShareButton link={`${window.location.protocol}//${window.location.host}/story/id/${story.unique_id}`}/>
-            </div>
+            </span>
         </Tooltip>
         
      
