@@ -19,7 +19,7 @@ const convertStoryToRaw = (content) => {
   return contentWithFormatting;
 }
 
-const Profile = () => {
+const Profile = (props) => {
 
   const [mode, setMode] = useState("light");
   const { isAuthenticated, user } = useAuth0();
@@ -35,16 +35,16 @@ const Profile = () => {
     });
 
     useEffect(() => {
-      if (isAuthenticated){
+      if (props.otherUser){
 
-        const fetchData = async (user) => {
-
+        const fetchOtherData = async (user) => {
+  
           try { 
             
             if (userObject){
 
               if (!userStories){
-                const getStories = await axios.get(`/api/users/${userObject.id}/stories`)
+                const getStories = await axios.get(`/api/users/${props.otherUser.id}/stories`)
                 console.log("Getting stories: ", getStories); 
                 return setUserStories(getStories.data);
 
@@ -54,9 +54,8 @@ const Profile = () => {
               }
 
             } else {
-              const getUsers = await axios.get(`/api/users`);
-              const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
-              return setUserObject(filteredUser);
+              const getUsers = await axios.get(`/api/users/${props.otherUser.id}`);
+              return setUserObject(getUsers.data.users[0]);
             }
           } catch (err) {
             console.error(err)
@@ -65,8 +64,43 @@ const Profile = () => {
           
         }
 
-        fetchData(user);
+        fetchOtherData(user);
+
+      } else {
         
+        if (isAuthenticated){
+  
+          const fetchData = async (user) => {
+  
+            try { 
+              
+              if (userObject){
+  
+                if (!userStories){
+                  const getStories = await axios.get(`/api/users/${userObject.id}/stories`)
+                  console.log("Getting stories: ", getStories); 
+                  return setUserStories(getStories.data);
+  
+                } else {
+                  console.log("User stories response: ", userStories); 
+                  return () => {};
+                }
+  
+              } else {
+                const getUsers = await axios.get(`/api/users`);
+                const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
+                return setUserObject(filteredUser);
+              }
+            } catch (err) {
+              console.error(err)
+              return () => {};
+            }
+            
+          }
+  
+          fetchData(user);
+          
+        }
       }
 
     }, [isAuthenticated, userObject, userStories]);

@@ -9,6 +9,7 @@ import {
   Skeleton
 } from "@mui/material";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
   const [isFollowed, setIsFollowed] = useState(null);
@@ -95,9 +96,11 @@ const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
         <Typography variant="body2" color="text.secondary">
           {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
         </Typography>
-        <Button variant="contained" size="small">
-          Visit Profile
-        </Button>
+        <Link to={`/user/${user.id}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" size="small">
+            Visit Profile
+          </Button>
+        </Link>
 
         {isAuthenticated && currentViewer && (
           <Button variant="contained" size="small" sx={{ ml: 5 }} onClick={isFollowed ? handleUnFollow : handleFollow}>
