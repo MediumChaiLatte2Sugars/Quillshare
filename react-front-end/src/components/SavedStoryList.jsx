@@ -26,10 +26,39 @@ import { Visibility ,Bookmarks, IosShare } from "@mui/icons-material";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
-const SavedStoryList = ({story, author}) => {
+const SavedStoryList = ({story, author, socket, username}) => {
 
   const [value, setValue] = useState(0);
   const [user, setUser] = useState(null);
+
+
+  console.log("Getting socket in savedstory ", socket); 
+
+  console.log("Getting username in savedstory ", username); 
+
+
+  const [liked, setLiked] = useState(false);
+
+  const handleNotification = (type) => {
+    type === 1 && setLiked(true);
+    socket.emit("sendNotification", {
+      senderName: username,
+      receiverName: user.name,
+      type,
+
+      
+    });
+
+    console.log("Getting sendername in hanle notification ", username); 
+
+  console.log("Getting receiver email in hanle notification ", user.email); 
+
+ 
+
+  console.log("Getting type in hanle notification ", type); 
+
+  };
+
 
   const truncateString = (str, maxLength) => {
     if (str.length <= maxLength) {
@@ -45,7 +74,11 @@ const SavedStoryList = ({story, author}) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/users/${author}`);
+        
         setUser(response.data.users[0]);
+
+       
+
       } catch (err) {
         console.error(err);
       }
@@ -93,16 +126,17 @@ const SavedStoryList = ({story, author}) => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite sx={{ color: "red" }} />}
+            onClick={() => handleNotification(1)}
           />
         </IconButton>
         <IconButton aria-label="LibraryAdd">
-          <LibraryAdd />
+          <LibraryAdd  onClick={() => handleNotification(2)}/>
         </IconButton>
         <IconButton aria-label="ModeComment">
           <ModeComment />
         </IconButton>
         <IconButton aria-label="share">
-          <Share />
+          <Share onClick={() => handleNotification(3)}/>
         </IconButton>
         
      

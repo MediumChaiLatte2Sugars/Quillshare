@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import "./navbar.css";
 // import AdbIcon from '@mui/icons-material/Adb';
 
 import axios from 'axios';
@@ -27,6 +28,8 @@ const fetchData = async (user) => {
     // Check if the user is registered in our database
     const getUsers = await axios.get(`/api/users`);
     const filteredUser = getUsers.data.users.find((u) => u.email === user.email);
+
+    console.log("Getting filteredUser value: ", filteredUser.username); 
 
     if (!filteredUser) {
       // User is not registered, perform registration
@@ -56,13 +59,57 @@ const fetchData = async (user) => {
 };
 
 
-function ResponsiveAppBar() {
+const ResponsiveAppBar = ({ socket }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const prevUserRef = useRef(null);
   const [userObject, setUserObject] = useState(null);
   
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+  const [notifications, setNotifications] = useState([]);
+  const [open1, setOpen1] = useState(false);
+
+  
+  // console.log("navbar data ", data); 
+
+  
+
+  useEffect(() => {
+    if(socket){
+    socket.on("getNotification", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }
+}, [socket]);
+
+  console.log("navbar socket ", socket); 
+
+  
+
+  const displayNotification = ({ senderName, type }) => {
+    let action;
+
+    if (type === 1) {
+      action = "liked";
+    } else if (type === 2) {
+      action = "Bookmarked";
+    } else {
+      action = "Commented";
+    }
+    return (
+      <span className="notification">{`${senderName} ${action} your post.`}</span>
+    );
+  };
+
+  const handleRead = () => {
+    setNotifications([]);
+    setOpen1(false);
+  };
+
+  
+
+
 
   useEffect(() => {
     const prevUser = prevUserRef.current;
@@ -131,8 +178,7 @@ function ResponsiveAppBar() {
           <HistoryEdu sx={{ display: { xs: 'none', md: 'flex'}, mr: 1 }} />
           <Typography
             variant="h6"
-            noWrap
-            component="a"
+    
             href="/"
             sx={{
               mr: 2,
@@ -196,7 +242,7 @@ function ResponsiveAppBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
+          
             href=""
             sx={{
               mr: 2,
@@ -226,21 +272,41 @@ function ResponsiveAppBar() {
           </Box>
 
           <Search sx={{ display: { xs: 'none', md: 'flex' } , mr: 55 }}>
+          <Link style={{textDecoration: "none", color:"white"}} to="">  
           <InputBase placeholder="search..." />
+          </Link>
         </Search>
 
           <Icons>
-          <Badge color="error">
+          
+          <Badge color="error"  >
             <BorderColor />
            </Badge>
-          <Typography variant="h6">
+           
+          <Typography variant="h6" sx={{ ml: -2 }}>
+         
           <Link style={{textDecoration: "none", color:"white"}} to="/createstory">Create </Link>
           </Typography>
-          <Badge color="error">
+          <Badge onClick={() => setOpen1(!open1)} color="error">
             <CircleNotifications />
+            {
+            notifications.length >0 &&
+            <div className="counter">{notifications.length}</div>
+            }
+
           </Badge>
           
-          {isAuthenticated ? <Typography variant="h6">
+          {open1 && (
+          <div className="notifications">
+          {notifications.map((n) => displayNotification(n))}
+            <button className="nButton" onClick={handleRead}>
+           Mark as read
+            </button>
+          </div>
+          )}
+
+
+          {isAuthenticated ? <Typography variant="h6"  sx={{ mr: 1 }} >
             {userObject ? userObject.username.split(" ")[0] : user.name}
           </Typography>: 
           
@@ -278,8 +344,13 @@ function ResponsiveAppBar() {
             >
               <MenuItem component={Link} to="/profile">Profile</MenuItem>
               <MenuItem>Notifications
-              <Badge color="error">
+              <Badge onClick={() => setOpen1(!open1)} color="error">
               <CircleNotifications />
+
+              {
+            notifications.length >0 &&
+            <div className="counter">{notifications.length}</div>
+            }
               </Badge>
               </MenuItem>
               <MenuItem >Saved Stories</MenuItem>

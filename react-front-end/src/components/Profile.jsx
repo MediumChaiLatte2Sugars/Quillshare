@@ -19,13 +19,16 @@ const convertStoryToRaw = (content) => {
   return contentWithFormatting;
 }
 
-const Profile = () => {
+const Profile = ({  socket, username }) => {
 
   const [mode, setMode] = useState("light");
   const { isAuthenticated, user } = useAuth0();
   const [userObject, setUserObject] = useState(null);
   const [userStories, setUserStories] = useState(null);
 
+  console.log("Getting socket in profile ", socket); 
+
+  console.log("Getting username in profile ", username); 
 
 
   const darkTheme = createTheme({
@@ -90,7 +93,7 @@ const Profile = () => {
                   content: convertStoryToRaw(story.content), 
                 };
 
-                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id}}/>;
+                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id}}  socket={socket} username={username} />;
               }) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />
             }
             {/* <SavedStoryList />
