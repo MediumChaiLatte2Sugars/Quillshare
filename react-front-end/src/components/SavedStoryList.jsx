@@ -229,6 +229,13 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         </Link>: <Button variant="contained" size="small" disabled={true}>
         <CircularProgress size={20} color="inherit" /> Let's Read
           </Button>}
+          { story && currentViewer && user && currentViewer === user.id ? <Link to={`/edit/${story.unique_id}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" size="small">
+            Edit
+          </Button>
+        </Link>: <Button variant="contained" size="small" disabled={true}>
+        <CircularProgress size={20} color="inherit" /> Let's Read
+          </Button>}
 
       </CardContent>
 

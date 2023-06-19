@@ -58,6 +58,16 @@ router.get("/:userId/name", async (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+// GET user name by id
+router.get("/:userId/email", async (req, res) => {
+  const userId = req.params.userId;
+  Users.findById(userId)
+    .then((user) => {
+      res.send(user[0].email);
+    })
+    .catch((err) => console.log("err:", err));
+});
+
 /***
  *
  *  User Feeds

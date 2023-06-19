@@ -36,8 +36,8 @@ export const CreateStoryForm = (props) => {
     <Formik
       //! Image field left out for now to plan out implementation details further
       initialValues={{
-        title: "",
-        editorState: EditorState.createEmpty(), // Initialize the editor state (this state holds the story content)
+        title: props.title || "",
+        editorState: props.editorState || EditorState.createEmpty(), // Initialize the editor state (this state holds the story content)
       }}
       validationSchema={Yup.object({
         title: Yup.string()

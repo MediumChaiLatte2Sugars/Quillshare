@@ -29,7 +29,7 @@ export const PublishSettingsForm = (props) => {
   const initialValues = {
     title: "Title",
     category: categories[0].id,
-    tags: "",
+    tags: props.tags || "",
     visibility: "public",
   };
 
