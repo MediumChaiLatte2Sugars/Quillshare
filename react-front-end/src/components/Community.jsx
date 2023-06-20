@@ -19,7 +19,6 @@ const Community = () => {
     },
     });
 
-    //! Use a different less vulnerable fetch!!! Placceholder
     useEffect(() => {
       async function fetchData() {
         try {
@@ -29,7 +28,6 @@ const Community = () => {
             setUsers(userResponse.data.users);
             if (isAuthenticated){
               const viewer = userResponse.data.users.find((u) => u.email === user.email)
-              alert(`Set current viewer to ${JSON.stringify(viewer)}`);
               console.log("Current viewer: ",viewer);
               setCurrentViewer(viewer);
             }
