@@ -38,7 +38,7 @@ const CategoryStory = () => {
           const categoryResponse = await axios.get(`/api/categories/${categoryParam}`);
           setCategory(categoryResponse.data[0]);
           const storiesResponse = await axios.get(`/api/categories/${categoryParam}/stories`);
-          console.log("STORIES: ", storiesResponse);
+          console.log("STORIES: ", storiesResponse.data);
           return setStories(storiesResponse.data);
         } catch (err) {
           console.error(err);
@@ -95,8 +95,8 @@ const CategoryStory = () => {
           <Box flex={4} p={{ xs: 0, md: 2 }}>
 
               <h2> {category ? category.name : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}</h2>
-              {!category || !stories ? (
-               <Stack spacing={1}>
+              {!stories || stories.length === 0 ? (
+                <Stack spacing={1}>
                 <Skeleton variant="text" height={100} />
                 <Skeleton variant="text" height={20} />
                 <Skeleton variant="text" height={20} />
