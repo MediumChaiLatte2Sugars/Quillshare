@@ -1,6 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
-const { Stories, StoryCategories, Comments, Likes, Tags, Subscriptions } = require("../models");
+const { Stories, StoryCategories, Comments, Likes, Tags, Subscriptions, SavedStories } = require("../models");
 const { v4: uuidv4 } = require('uuid');
 
 // GET all stories ------ /api/stories
@@ -57,7 +57,7 @@ router.get("/id/:uniqueId", (req, res) => {
 
 router.get("/:id/bookmarks", (req, res) => {
   const storyId = req.params.id;
-  Subscriptions.find({story_id: storyId})
+  SavedStories.find({story_id: storyId})
     .then((bookmarks) => {
       res.send(bookmarks);
     })
