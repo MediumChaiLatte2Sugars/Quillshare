@@ -145,9 +145,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET a stories comments -----   /api/stories/:id/comments
+router.get('/:id/comments', (req, res) => {
+  const storyId = req.params.id;
+  Comments.find({story_id: storyId})
+    .then(comments => {
+      res.send(comments)
+    })
+    .catch((err) => console.log('err:', err))
+});
+
 // POST a new comment -----   /api/stories/:id/comments
 router.post('/:id/comments', (req, res) => {
   const props = req.body;
+  console.log(props);
   Comments.create(props)
     .then(comment => {
       res.json({
