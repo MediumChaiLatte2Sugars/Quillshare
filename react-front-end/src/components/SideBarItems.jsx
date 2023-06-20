@@ -44,6 +44,7 @@ const SideBarItems = (props) => {
   console.log("SIDEBAR PRops:", props.story);
 
   const [author, setAuthor] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (props.story) {
@@ -60,6 +61,21 @@ const SideBarItems = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (props.user) {
+      const fetchData = async (user) => {
+        try {
+          const userResponse = await axios.get(`/api/users/${user}`);
+          return setUser(userResponse.data.users[0]);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      fetchData(props.user);
+    }
+  }, []);
+
   return (
     <>
       {props.isUser ? (
@@ -67,13 +83,13 @@ const SideBarItems = (props) => {
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar>{props.user ? props.user.username.split('')[0] : 'J'}</Avatar>
+                <Avatar>{user ? user.username.split('')[0] : 'J'}</Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={props.user ? props.user.username : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
+                primary={user ? user.username : <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
                 secondary={
                   <>
-                    {props.user ? props.user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+                    {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
                   </>
                 }
               />

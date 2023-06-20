@@ -61,6 +61,10 @@ export default function ProfileTabs(props) {
       const fetchData = async (user) => {
         try {
           const response = await axios.get(`api/users/${user.id}/saved-stories`);
+          const followersResponse = await axios.get(`api/users/${user.id}/followers`);
+          const followingResponse = await axios.get(`api/users/${user.id}/following`);
+          setFollowers(followersResponse.data);
+          setFollowing(followingResponse.data);
           return setReadingList(response.data);
         } catch (err) {
           console.error(err);
@@ -82,12 +86,15 @@ export default function ProfileTabs(props) {
       <TabPanel value={value} index={0}>
         {props.user ? props.user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
 
-        <h3>Follows</h3>
-        <h3>Following</h3>
+        <h3>Follows {`(${followers ? followers.length : ""})`}</h3>
+        {followers ? followers.map((follower) => { return <SideBarItems user={follower.userId} isUser={true}/> }) : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+        <h3>Following {`(${following ? following.length : ""})`}</h3>
+        {following ? following.map((follow) => { return <SideBarItems user={follow.userId} isUser={true}/> }) : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+
       </TabPanel>
       <TabPanel value={value} index={1}>
       <Box flex={2} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
-        <Box width={300}>
+        <Box width={250}>
           {readingList ? readingList.map((story) => { return <SideBarItems story={story} /> }) : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
         </Box>
       </Box>
