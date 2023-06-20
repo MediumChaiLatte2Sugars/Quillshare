@@ -60,20 +60,34 @@ export default function ProfileTabs(props) {
     if (props.user) {
       const fetchData = async (user) => {
         try {
-          const response = await axios.get(`api/users/${user.id}/saved-stories`);
-          const followersResponse = await axios.get(`api/users/${user.id}/followers`);
-          const followingResponse = await axios.get(`api/users/${user.id}/following`);
-          setFollowers(followersResponse.data);
-          setFollowing(followingResponse.data);
-          return setReadingList(response.data);
+          const response = await axios.get(`/api/users/${user.id}/saved-stories`);
+          setReadingList(response.data);
         } catch (err) {
           console.error(err);
         }
-      }
-
+      };
+  
       fetchData(props.user);
     }
   }, [props.user]);
+  
+  useEffect(() => {
+    if (props.user) {
+      const fetchFollowData = async (user) => {
+        try {
+          const followersResponse = await axios.get(`/api/users/${user.id}/followers`);
+          const followingResponse = await axios.get(`/api/users/${user.id}/following`);
+          setFollowers(followersResponse.data);
+          setFollowing(followingResponse.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+  
+      fetchFollowData(props.user);
+    }
+  }, [props.user]);
+  
 
   return (
     <Box sx={{ width: '100%' }}>
