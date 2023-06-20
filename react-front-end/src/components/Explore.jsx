@@ -30,12 +30,12 @@ const Explore = () => {
 
      <h2>Popular Categories</h2>
      <Grid container spacing={1}>
-      <Grid item xs={12} sm={4} component={Link} to="/CategoryStory" >
+      <Grid item xs={12} sm={4} component={Link} to="/category/1" >
         <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', p: 2 }}>
           Adventure
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/2">
         <Box
           sx={{
             bgcolor: 'secondary.main',
@@ -46,52 +46,52 @@ const Explore = () => {
          Non Fiction
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}  >
+      <Grid item xs={12} sm={4} component={Link} to="/category/11">
         <Box sx={{ bgcolor: 'error.main', color: 'error.contrastText', p: 2 }}>
          How To
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/9">
         <Box sx={{ bgcolor: 'warning.main', color: 'warning.contrastText', p: 2 }}>
           Thriller
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/1">
         <Box sx={{ bgcolor: 'info.main', color: 'info.contrastText', p: 2 }}>
           Poetry
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/1">
         <Box sx={{ bgcolor: 'success.main', color: 'success.contrastText', p: 2 }}>
         Fiction
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/1">
         <Box sx={{ bgcolor: 'text.primary', color: 'background.paper', p: 2 }}>
         Short Story
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/12">
         <Box sx={{ bgcolor: 'text.secondary', color: 'background.paper', p: 2 }}>
           Science
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/8">
         <Box sx={{ bgcolor: 'text.disabled', color: 'background.paper', p: 2 }}>
           Historical
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/13">
         <Box sx={{ bgcolor: 'warning.main', color: 'warning.contrastText', p: 2 }}>
           Technology
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/13">
         <Box sx={{ bgcolor: 'info.main', color: 'info.contrastText', p: 2 }}>
           AI
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4} component={Link} to="/category/14">
         <Box sx={{ bgcolor: 'success.main', color: 'success.contrastText', p: 2 }}>
         Humor
         </Box>

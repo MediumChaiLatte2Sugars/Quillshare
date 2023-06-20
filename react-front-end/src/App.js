@@ -39,7 +39,7 @@ class App extends Component {
       <Route path="/explore" element={<Explore /> } />
       <Route path="/community" element={<Community /> } />
       <Route path="/feed" element={<Feed /> } />
-      <Route path="/CategoryStory" element={<CategoryStory /> } />
+      <Route path="/category/:id" element={<CategoryStory /> } />
       <Route path="/createstory" element={<CreateStory /> } />
       <Route path="/profile" element={<Profile /> } />
       <Route path="/story/:id" element={<SingleStory />} />

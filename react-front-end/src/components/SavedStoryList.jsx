@@ -34,6 +34,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
   const [user, setUser] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(null);
 
 
   const truncateString = (str, maxLength) => {
@@ -108,6 +109,8 @@ const SavedStoryList = ({story, author, currentViewer}) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/users/${author}`);
+        const likesResponse = await axios.get(`/api/stories/${story.id}/likes/`)
+        setLikes(likesResponse.data.length);
         setUser(response.data.users[0]);
       } catch (err) {
         console.error(err);
@@ -143,7 +146,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         try {
           const response = await axios.get(`/api/users/${currentViewer}/story/likes?story_id=${story.id}`);
 
-          const result = response.data;
+          const result = response.data[0];
           console.log("Use Effect Like Fetching Repsonse: ", result);
           setIsLiked(result);
         } catch (err) {
@@ -248,7 +251,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
       >
          <BottomNavigationAction label="5 Min.Read" icon={<AutoStories />} />
          <BottomNavigationAction label="3 Days ago" icon={<Schedule />} />
-        <BottomNavigationAction  label="1.2 K" icon={<Visibility />} />
+        <BottomNavigationAction  label={likes ? `${likes}` : "1.2 K" } icon={<Favorite />} />
          <BottomNavigationAction label="76 K" icon={<IosShare />} />
          <BottomNavigationAction label="400 K" icon={<Bookmarks />} />
        
