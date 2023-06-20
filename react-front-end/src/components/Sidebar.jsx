@@ -66,12 +66,12 @@ import {
             </ListItem>
 
 
-            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}} component={Link} to="/Feed">
-              <ListItemButton component="a" href="#simple-list">
+            <ListItem disablePadding style={{textDecoration: "none", color:"Black"}}>
+              <ListItemButton component={Link} to="/Feed">
                 <ListItemIcon>
                   <Person />
                 </ListItemIcon>
-                <ListItemText primary="My Saved Stories" />
+                <ListItemText primary="Feed" />
               </ListItemButton>
             </ListItem>
 
