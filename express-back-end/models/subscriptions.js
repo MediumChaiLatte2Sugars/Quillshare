@@ -29,12 +29,21 @@ const newSelectableProps = [
   'updated_at'
 ]
 
+const userProps = [
+  'subscriptions.id as subsId',
+  'users.id as userId',
+  'users.email',
+  'users.profile_pic',
+  'users.bio',
+]
+
 module.exports = knex => {
   const model = createModel({
     knex,
     name,
     tableName,
-    selectableProps
+    selectableProps,
+    userProps
   });
 
   return {

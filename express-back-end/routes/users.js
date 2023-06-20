@@ -146,6 +146,24 @@ router.get("/:id/stories", (req, res) => {
     .catch((err) => console.log("err:", err));
 });
 
+router.get("/:id/followers", (req, res) => {
+  const userId = req.params.id;
+  Subscriptions.getFollowers(userId)
+    .then((users) => {
+      res.send(users);
+    })
+    .catch((err) => console.log("err:", err));
+});
+
+router.get("/:id/following", (req, res) => {
+  const userId = req.params.id;
+  Subscriptions.getFollowing(userId)
+    .then((following) => {
+      res.send(following);
+    })
+    .catch((err) => console.log("err:", err));
+});
+
 // GET a user's like for a specific story
 router.get("/:userId/story/likes", (req, res) => {
   const userId = req.params.userId;

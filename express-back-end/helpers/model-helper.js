@@ -5,6 +5,7 @@ module.exports = ({
   selectableProps = [],
   timeout = 1000,
   newSelectableProps = [],
+  userProps = []
 }) => {
   const create = props => {
     delete props?.id // not allowed to set `id`
@@ -77,11 +78,24 @@ module.exports = ({
     .andWhere('stories.status', 'published')
     .timeout(timeout)
 
+  const getFollowers = (val) => knex.select(userProps)
+    .from(tableName)
+    .join('users', 'users.id', '=', 'subscriptions.user1')
+    .where({'subscriptions.user2': val})
+    .timeout(timeout)
+
+  const getFollowing = (val) => knex.select(userProps)
+    .from(tableName)
+    .join('users', 'users.id', '=', 'subscriptions.user2')
+    .where({'subscriptions.user1': val})
+    .timeout(timeout)
+
   return {
     name,
     tableName,
     selectableProps,
     newSelectableProps,
+    userProps,
     timeout,
     create,
     findAll,
@@ -93,5 +107,7 @@ module.exports = ({
     getAllStoriesByCategoryId,
     getAllSavedStoriesbyUserId,
     getAllStoriesbyTagName,
+    getFollowers,
+    getFollowing
   }
 }

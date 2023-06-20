@@ -58,8 +58,8 @@ router.get("/id/:uniqueId", (req, res) => {
 router.get("/:id/bookmarks", (req, res) => {
   const storyId = req.params.id;
   Subscriptions.find({story_id: storyId})
-    .then((story) => {
-      res.send(story);
+    .then((bookmarks) => {
+      res.send(bookmarks);
     })
     .catch((err) => console.log('err:', err));
 });
@@ -67,8 +67,8 @@ router.get("/:id/bookmarks", (req, res) => {
 router.get("/:id/likes", (req, res) => {
   const storyId = req.params.id;
   Likes.find({story_id: storyId})
-    .then((story) => {
-      res.send(story);
+    .then((likes) => {
+      res.send(likes);
     })
     .catch((err) => console.log('err:', err));
 });
