@@ -4,12 +4,14 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import SideBarItems from './SideBarItems';
 
 import { Skeleton } from "@mui/material";
 
 import { useAuth0 } from '@auth0/auth0-react';
 
 import axios from 'axios';
+import Sidebar from './Sidebar';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,12 +46,30 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileTabs({user}) {
+export default function ProfileTabs(props) {
   const [value, setValue] = useState(0);
+  const [followers, setFollowers] = useState(null);
+  const [following, setFollowing] = useState(null);
+  const [readingList, setReadingList] = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    if (props.user) {
+      const fetchData = async (user) => {
+        try {
+          const response = await axios.get(`api/users/${user.id}/saved-stories`);
+          return setReadingList(response.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      fetchData(props.user);
+    }
+  }, [props.user]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -60,13 +80,17 @@ export default function ProfileTabs({user}) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+        {props.user ? props.user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
 
         <h3>Follows</h3>
         <h3>Following</h3>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+      <Box flex={2} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
+        <Box width={300}>
+          {readingList ? readingList.map((story) => { return <SideBarItems story={story} /> }) : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
+        </Box>
+      </Box>
       </TabPanel>
     </Box>
   );
