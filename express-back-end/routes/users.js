@@ -151,7 +151,7 @@ router.get("/:userId/story/likes", (req, res) => {
   const userId = req.params.userId;
   const storyId = req.query.story_id;
 
-  Likes.findOne({
+  Likes.find({
     user_id: userId,
     story_id: storyId,
   })

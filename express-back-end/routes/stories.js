@@ -1,6 +1,6 @@
 const Express = require("express");
 const router = Express.Router();
-const { Stories, StoryCategories, Comments, Likes, Tags } = require("../models");
+const { Stories, StoryCategories, Comments, Likes, Tags, Subscriptions } = require("../models");
 const { v4: uuidv4 } = require('uuid');
 
 // GET all stories ------ /api/stories
@@ -35,6 +35,7 @@ router.get("/:id", (req, res) => {
   //   .catch((err) => console.log("err:", err));
 });
 
+
 // GET a single story by unique_id ------ /api/stories/:id
 router.get("/id/:uniqueId", (req, res) => {
   const storyUniqueId = req.params.uniqueId;
@@ -52,6 +53,24 @@ router.get("/id/:uniqueId", (req, res) => {
   //     res.send(data);
   //   })
   //   .catch((err) => console.log("err:", err));
+});
+
+router.get("/:id/bookmarks", (req, res) => {
+  const storyId = req.params.id;
+  Subscriptions.find({story_id: storyId})
+    .then((story) => {
+      res.send(story);
+    })
+    .catch((err) => console.log('err:', err));
+});
+
+router.get("/:id/likes", (req, res) => {
+  const storyId = req.params.id;
+  Likes.find({story_id: storyId})
+    .then((story) => {
+      res.send(story);
+    })
+    .catch((err) => console.log('err:', err));
 });
 
 // UPDATE a story by id -----  /api/stories/:id
