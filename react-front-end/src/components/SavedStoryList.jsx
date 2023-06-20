@@ -28,12 +28,52 @@ import { Visibility ,Bookmarks, IosShare } from "@mui/icons-material";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
-const SavedStoryList = ({story, author, currentViewer}) => {
+const SavedStoryList = ({story, author, currentViewer,  socket, username , otherUser}) => {
 
   const [value, setValue] = useState(0);
   const [user, setUser] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  const [getReceiver, setReceiver] = useState(null);
+  
+
+  console.log("Getting sendername in hanle notification....... ", socket); 
+
+  console.log("Getting user value ", user); 
+  
+  console.log("Getting getReceiver value $$$$$$", getReceiver); 
+  
+  console.log("Getting user value of otheruser ", otherUser); 
+ 
+
+  const [liked, setLiked] = useState(false);
+
+  const handleNotification = (type) => {
+    // type === 3 && setLiked(true);
+    socket.emit("sendNotification", {
+      senderName: username,
+      receiverName: getReceiver,
+      type,
+
+      
+    });
+
+
+
+   
+
+    console.log("Getting sendername in hanle notification ", username); 
+
+ 
+
+  console.log("Getting type in hanle notification ", type); 
+
+  };
+
+
+
+
 
 
   const truncateString = (str, maxLength) => {
@@ -109,6 +149,9 @@ const SavedStoryList = ({story, author, currentViewer}) => {
       try {
         const response = await axios.get(`/api/users/${author}`);
         setUser(response.data.users[0]);
+
+        setReceiver( response.data.users[0].username) ; 
+
       } catch (err) {
         console.error(err);
       }
@@ -190,9 +233,9 @@ const SavedStoryList = ({story, author, currentViewer}) => {
 
         <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
           <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
-            {isLiked ? <Checkbox
+            {isLiked ? <Checkbox  onClick={() => handleNotification(1)}
               icon={<Favorite sx={{ color: "red" }} />}
-              checkedIcon={<Favorite sx={{ color: "red" }} />}
+              checkedIcon={<Favorite sx={{ color: "red" }}  />}
             /> : <Checkbox
               icon={<FavoriteBorder />}
               checkedIcon={<Favorite sx={{ color: "red" }} />}
@@ -205,11 +248,13 @@ const SavedStoryList = ({story, author, currentViewer}) => {
             onClick={isBookmarked ? handleUnbookmark : handleBookmark}
           >
              {isBookmarked ? 
-            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
+            <LibraryAdd onClick={() => handleNotification(2)} style={{ color: '#badb82' }}/> : <LibraryAdd />}
           </IconButton> 
         </Tooltip>
+
+
         <IconButton aria-label="ModeComment">
-          <ModeComment />
+          <ModeComment  onClick={() => handleNotification(3)} />
         </IconButton>
         {/* <IconButton aria-label="share">
           <Share />

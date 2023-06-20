@@ -21,7 +21,8 @@ const convertStoryToRaw = (content) => {
 }
 
 const Profile = (props) => {
-
+  const {socket , username, otherUser} = props ;
+  
   const [mode, setMode] = useState("light");
   const { isAuthenticated, user } = useAuth0();
   const [userObject, setUserObject] = useState(null);
@@ -29,7 +30,16 @@ const Profile = (props) => {
   const [currentViewer, setCurrentViewer] = useState(null);
   const [isFollowed, setIsFollowed] = useState(null);
 
-
+  // console.log("we are checking username " ,username);
+  console.log("we ------------ " ,props);
+  
+  console.log("we ------------ " ,props.otherUser);
+ 
+  console.log("we ------------ " ,props.otherUser.id);
+ 
+  console.log("we ----***-------- " ,props.otherUser.name);
+  console.log("we ------------ " ,props.otherUser.username);
+ 
 
   const darkTheme = createTheme({
     palette: {
@@ -58,7 +68,9 @@ const Profile = (props) => {
     useEffect(() => {
       if (props.otherUser){
 
-        const fetchOtherData = async (user) => {
+        const fetchOtherData = async (
+          
+        ) => {
   
           try { 
             
@@ -219,7 +231,7 @@ const Profile = (props) => {
                   content: convertStoryToRaw(story.content), 
                 };
 
-                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} currentViewer={userObject.id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id, unique_id: updatedStory.unique_id}}/>;
+                return <SavedStoryList key={updatedStory.id} author={updatedStory.user_id} currentViewer={userObject.id} story={{created_at: updatedStory.created_at, title: updatedStory.title, content: updatedStory.content, id: updatedStory.id, unique_id: updatedStory.unique_id}}   socket={socket} username={username}  otherUser={otherUser}/>;
               }) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />
             }
             {/* <SavedStoryList />

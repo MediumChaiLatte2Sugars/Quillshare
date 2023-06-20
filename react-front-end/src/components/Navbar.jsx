@@ -56,13 +56,62 @@ const fetchData = async (user) => {
 };
 
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar( { socket }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const prevUserRef = useRef(null);
   const [userObject, setUserObject] = useState(null);
   
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+
+  const [notifications, setNotifications] = useState([]);
+  const [open1, setOpen1] = useState(false);
+
+  
+  // console.log("navbar data ", data); 
+
+  
+
+  useEffect(() => {
+    if(socket){
+    socket.on("getNotification", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }
+}, [socket]);
+
+  console.log("navbar socket ", socket); 
+
+  
+
+  const displayNotification = ({ senderName, type }) => {
+    let action;
+
+    if (type === 1) {
+      action = "liked";
+    } else if (type === 2) {
+      action = "Bookmarked";
+    } else if (type === 3) {
+      action = "Commented";
+    } else  {
+      action = "Shared";
+    }
+    
+    return (
+      <span className="notification">{`${senderName} ${action} your post.`}</span>
+    );
+  };
+
+  const handleRead = () => {
+    setNotifications([]);
+    setOpen1(false);
+  };
+
+  
+
+
+
 
   useEffect(() => {
     const prevUser = prevUserRef.current;
@@ -123,6 +172,8 @@ function ResponsiveAppBar() {
     borderRadius: theme.shape.borderRadius,
     width: "15%",
   }));
+
+
 
   return (
     <AppBar position="sticky" color='primary' >
@@ -229,18 +280,37 @@ function ResponsiveAppBar() {
           <InputBase placeholder="search..." />
         </Search>
 
+       
+
           <Icons>
           <Badge color="error">
             <BorderColor />
            </Badge>
-          <Typography variant="h6">
+          <Typography variant="h6"  sx={{ ml: -2 }}>
           <Link style={{textDecoration: "none", color:"white"}} to="/createstory">Create </Link>
           </Typography>
-          <Badge color="error">
+          <Badge onClick={() => setOpen1(!open1)} color="error">
             <CircleNotifications />
+            {
+            notifications.length >0 &&
+            <div className="counter">{notifications.length}</div>
+            }
           </Badge>
+         
           
-          {isAuthenticated ? <Typography variant="h6">
+  {open1 && (
+    <div className="notifications">
+    {notifications.map((n) => displayNotification(n))}
+      <button className="nButton" onClick={handleRead}>
+     Mark as read
+      </button>
+    </div>
+    )}
+
+          
+
+
+          {isAuthenticated ? <Typography variant="h6" sx={{ mr: 1 }}>
             {userObject ? userObject.username.split(" ")[0] : user.name}
           </Typography>: 
           
@@ -286,11 +356,22 @@ function ResponsiveAppBar() {
               <MenuItem>Stories</MenuItem>
               <MenuItem onClick={() => logout({ returnTo: `${window.location.protocol}//${window.location.host}/homepage` })}>Logout</MenuItem>
              </Menu>
+
+            
           </Box>}
           
         </Toolbar>
+
+
+        
       </Container>
+     
+      
     </AppBar>
+
+
+
+
   );
 }
 export default ResponsiveAppBar;
