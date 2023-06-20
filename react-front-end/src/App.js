@@ -14,6 +14,7 @@ import Profile from './components/Profile';
 import SingleStory from './components/SingleStory';
 import EditStory from './components/EditStory';
 import NonUserProfile from './components/NonUserProfile';
+import UserPublishedStories from './components/UserPublishedStories';
 
 // import { withAuth0 } from "@auth0/auth0-react";
 
@@ -43,6 +44,7 @@ class App extends Component {
       <Route path="/story/:id" element={<SingleStory />} />
       <Route path="/edit/:uniqueId" element={<EditStory />} />
       <Route path="/user/:id" element={<NonUserProfile />} />
+      <Route path="/user/stories/published" element={<UserPublishedStories />} />
      </Routes>
     </Box>
   

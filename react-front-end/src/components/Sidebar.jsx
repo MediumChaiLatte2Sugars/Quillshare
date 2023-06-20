@@ -77,7 +77,7 @@ import {
 
 
             <ListItem disablePadding >
-              <ListItemButton component="a" href="#simple-list">
+              <ListItemButton component={Link} to="/user/stories/published">
                 <ListItemIcon>
                   <Settings />
                 </ListItemIcon>
@@ -87,8 +87,8 @@ import {
 
 
             
-            <ListItem disablePadding component={Link} to="/profile">
-              <ListItemButton component="a" href="#simple-list">
+            <ListItem disablePadding >
+              <ListItemButton component={Link} to="/profile">
                 <ListItemIcon>
                   <AccountBox />
                 </ListItemIcon>
