@@ -3,11 +3,13 @@ import { PublishSettingsForm } from "./PublishSettingsForm";
 import { CreateStoryForm } from "./CreateStoryForm";
 import axios from "axios";
 import { Drawer, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const PublishForm = (props) => {
   const [publishSettingsFormValues, setPublishSettingsFormValues] = useState(null);
   const [createStoryFormValues, setCreateStoryFormValues] = useState(null);
   const [drawer, setDrawer] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (publishSettingsFormValues && createStoryFormValues && props.user.id) {
@@ -28,6 +30,9 @@ export const PublishForm = (props) => {
       // Handle the response as needed
       console.log(response.data);
       alert("Story submitted successfully!");
+
+      // Redirect to a stories page
+      navigate("/user/stories/published");
     } catch (error) {
       // Handle errors
       console.error(error);
