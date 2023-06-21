@@ -6,13 +6,16 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  Skeleton
+  Skeleton,
+  Snackbar
 } from "@mui/material";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
   const [isFollowed, setIsFollowed] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const fetchFollowStatus = async () => {
     try {
@@ -62,11 +65,14 @@ const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
         user2: user.id,
       });
       console.log("Handle follow res: ", response);
-      alert("User successfully followed!");
+      setIsFollowed(response.data[0]);
+      setSnackbarMessage("User successfully followed!");
+      setSnackbarOpen(true);
       setIsFollowed(response.data[0]);
     } catch (err) {
       console.error(err);
-      alert("An error occurred while following this user.");
+      setSnackbarMessage("An error occurred while following this user.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -78,46 +84,57 @@ const CommunityList = ({ user, isAuthenticated, currentViewer }) => {
       });
       console.log("Handle follow res: ", response);
       setIsFollowed(null);
-      alert("User successfully unfollowed!");
+      setSnackbarMessage("User successfully unfollowed!");
+      setSnackbarOpen(true);
     } catch (err) {
       console.error(err);
-      alert("An error occurred while unfollowing this user.");
+      setSnackbarMessage("An error occurred while unfollowing this user.");
+      setSnackbarOpen(true);
     }
   };
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+
   return (
     <Card sx={{ margin: 5 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            {user ? user.username.split("")[0] : <Skeleton variant="circular" width={48} height={48} />}
-          </Avatar>
-        }
-        title={user ? user.username : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
-        subheader={user ? `Joined ${formatDate(user.created_at)}` : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
-      />
+    <CardHeader
+      avatar={
+        <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
+          {user ? user.username.charAt(0) : <Skeleton variant="circular" width={48} height={48} />}
+        </Avatar>
+      }
+      title={user ? user.username : <Skeleton variant="text" sx={{ fontSize: "1rem" }} animation="wave" />}
+      subheader={user ? `Joined ${formatDate(user.created_at)}` : <Skeleton variant="text" sx={{ fontSize: "1rem" }} animation="wave" />}
+    />
 
-      <Typography variant="body2" color="Bold" fontSize={20} sx={{ ml: 2 }}>
-        Bio:
+    <CardContent>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: "1rem" }} animation="wave" />}
       </Typography>
 
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {user ? user.bio : <Skeleton variant="text" sx={{ fontSize: '1rem' }} animation="wave" />}
-        </Typography>
-        <Link to={`/user/${user.id}`} style={{ textDecoration: 'none' }}>
-          <Button variant="contained" size="small">
-            Visit Profile
-          </Button>
-        </Link>
+      <Link to={`/user/${user.id}`} style={{ textDecoration: "none" }}>
+        <Button variant="contained" size="small">
+          Visit Profile
+        </Button>
+      </Link>
 
-        {isAuthenticated && currentViewer && (
-          <Button variant="contained" size="small" sx={{ ml: 5 }} onClick={isFollowed ? handleUnFollow : handleFollow}>
-            {isFollowed ? "Unfollow" : "Follow"}
-          </Button>
-        )}
-      </CardContent>
-    </Card>
+      {isAuthenticated && currentViewer && (
+        <Button variant="contained" size="small" sx={{ ml: 2 }} onClick={isFollowed ? handleUnFollow : handleFollow}>
+          {isFollowed ? "Unfollow" : "Follow"}
+        </Button>
+      )}
+    </CardContent>
+
+    <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+      />
+  </Card>
   );
 };
 
