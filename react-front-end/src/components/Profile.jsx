@@ -33,13 +33,16 @@ const Profile = (props) => {
   // console.log("we are checking username " ,username);
   console.log("we ------------ " ,props);
   
-  console.log("we ------------ " ,props.otherUser);
- 
-  console.log("we ------------ " ,props.otherUser.id);
- 
-  console.log("we ----***-------- " ,props.otherUser.name);
-  console.log("we ------------ " ,props.otherUser.username);
- 
+  if (props.otherUser){
+
+    console.log("we ------------ " ,props.otherUser);
+   
+    console.log("we ------------ " ,props.otherUser.id);
+   
+    console.log("we ----***-------- " ,props.otherUser.name);
+    console.log("we ------------ " ,props.otherUser.username);
+   
+  }
 
   const darkTheme = createTheme({
     palette: {

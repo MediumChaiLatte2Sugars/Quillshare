@@ -92,6 +92,8 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
         story_id: story.id,
         user_id: currentViewer,
       });
+
+      handleNotification(2);
       setIsBookmarked(response.data[0]);
     } catch (err) {
       console.error(err);
@@ -115,6 +117,7 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
         story_id: story.id,
         user_id: currentViewer,
       });
+      handleNotification(1);
       setIsLiked(response.data[0]);
     } catch (err) {
       console.error(err);
@@ -233,7 +236,7 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
 
         <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
           <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
-            {isLiked ? <Checkbox  onClick={() => handleNotification(1)}
+            {isLiked ? <Checkbox
               icon={<Favorite sx={{ color: "red" }} />}
               checkedIcon={<Favorite sx={{ color: "red" }}  />}
             /> : <Checkbox
@@ -248,7 +251,7 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
             onClick={isBookmarked ? handleUnbookmark : handleBookmark}
           >
              {isBookmarked ? 
-            <LibraryAdd onClick={() => handleNotification(2)} style={{ color: '#badb82' }}/> : <LibraryAdd />}
+            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd onClick={() => handleNotification(2)}/>}
           </IconButton> 
         </Tooltip>
 

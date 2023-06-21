@@ -61,6 +61,7 @@ export default function StoryBar({story, author, user, link}) {
         story_id: story.id,
         user_id: user.id,
       });
+      console.log("Like response: ", response.data);
       setIsLiked(response.data[0]);
     } catch (err) {
       console.error(err);
@@ -71,7 +72,7 @@ export default function StoryBar({story, author, user, link}) {
     try {
       console.log("Like id before deleting: ", isLiked.id);
       const response = await axios.delete(`/api/likes/${isLiked.id}`);
-      console.log("Handle UnLike Response: ", response.data);
+      console.log("Handle UnLike Response: ", response);
       setIsLiked(null);
     } catch (err) {
       console.error(err);
@@ -112,7 +113,7 @@ export default function StoryBar({story, author, user, link}) {
 
           const result = response.data;
           console.log("Use Effect Like Fetching Repsonse: ", result);
-          setIsLiked(result);
+          return setIsLiked(result);
         } catch (err) {
           console.error(err);
         }
