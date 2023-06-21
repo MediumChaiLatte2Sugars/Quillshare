@@ -221,7 +221,7 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
       
       {story && story.image ? <CardMedia 
         component="img"
-        sx={{ width: 100 , height: 100 , ml:2}}
+        sx={{ width: 100 , height: 100 }}
         
         image="https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c"
         alt="Paella dish"

@@ -1,0 +1,47 @@
+
+
+.counter {
+  width: 7px;
+  height: 7px;
+  background-color: red;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+.notifications {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  background-color: white;
+  border: dodgerblue;
+  color: black;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+ 
+}
+
+.notification {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.nButton {
+  width: 80%;
+  padding: 5px;
+  margin-top: 10px;
+  color: white;
+  border-radius: 7%;
+  font-weight: 500;
+  font-size: 16px;
+  border-style: hidden;
+  background-color: rgb(14, 111, 209);
+}

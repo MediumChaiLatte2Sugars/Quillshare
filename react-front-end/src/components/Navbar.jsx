@@ -1,3 +1,5 @@
+import "./notifications.css";
+
 import React, { useEffect, useRef, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import {Box , Badge , styled, InputBase }from '@mui/material';
@@ -350,6 +352,10 @@ function ResponsiveAppBar( { socket }) {
               <MenuItem>Notifications
               <Badge color="error">
               <CircleNotifications />
+              {
+            notifications.length >0 &&
+            <div className="counter">{notifications.length}</div>
+            }
               </Badge>
               </MenuItem>
               <MenuItem >Saved Stories</MenuItem>
