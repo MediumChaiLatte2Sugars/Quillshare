@@ -251,7 +251,7 @@ const SavedStoryList = ({story, author, currentViewer,  socket, username , other
             onClick={isBookmarked ? handleUnbookmark : handleBookmark}
           >
              {isBookmarked ? 
-            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd onClick={() => handleNotification(2)}/>}
+            <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
           </IconButton> 
         </Tooltip>
 
