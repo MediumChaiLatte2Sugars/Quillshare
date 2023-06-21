@@ -30,7 +30,7 @@ const HomePage = () => {
             <React.Fragment>
       <CssBaseline />
       <Container>
-        <Box sx={{ bgcolor: 'wheat' }} >
+        <Box sx={{ bgcolor: 'white' }} >
 
         <Typography variant="body2" color="text.secondary" align='center' fontSize={30} sx={{ mt: 5 }}>
         Welcome to Quillshare
