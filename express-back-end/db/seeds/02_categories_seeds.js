@@ -16,6 +16,10 @@ exports.seed = knex => knex(Categories.tableName).del()
     { name: 'Science' },
     { name: 'Technology' },
     { name: 'Humor' },
+    { name: 'Adventure' },
+    { name: 'AI' },
+    { name: 'Short Story' },
+    { name: 'Poetry' },
   ])
   .then(newCategory => Promise.all(newCategory.map(category => Categories.create(category))))
   .catch(err => console.log('err: ', err))

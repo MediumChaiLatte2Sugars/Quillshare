@@ -56,7 +56,7 @@ const Explore = () => {
           Thriller
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4} component={Link} to="/category/1">
+      <Grid item xs={12} sm={4} component={Link} to="/category/18">
         <Box sx={{ bgcolor: 'info.main', color: 'info.contrastText', p: 2 }}>
           Poetry
         </Box>
@@ -66,7 +66,7 @@ const Explore = () => {
         Fiction
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4} component={Link} to="/category/1">
+      <Grid item xs={12} sm={4} component={Link} to="/category/17">
         <Box sx={{ bgcolor: 'text.primary', color: 'background.paper', p: 2 }}>
         Short Story
         </Box>
@@ -86,7 +86,7 @@ const Explore = () => {
           Technology
         </Box>
       </Grid>
-      <Grid item xs={12} sm={4} component={Link} to="/category/13">
+      <Grid item xs={12} sm={4} component={Link} to="/category/16">
         <Box sx={{ bgcolor: 'info.main', color: 'info.contrastText', p: 2 }}>
           AI
         </Box>
