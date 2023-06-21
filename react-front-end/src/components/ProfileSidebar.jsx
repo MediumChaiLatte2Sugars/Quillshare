@@ -60,14 +60,18 @@ const ProfileSidebar = (props) => {
 
 
         {/* // Actions */}
-        <Box display="flex" justifyContent="space-between">
-          <Message />
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <IconButton aria-label="message">
+            <Message />
+          </IconButton>
           <Tooltip title={props.isFollowed ? "Unfollow" : "Follow"}>
             <IconButton aria-label="follow" onClick={props.isFollowed ? props.handleUnFollow : props.handleFollow}>
-              {props.isFollowed ? <GroupAdd style={{color: "blue"}}/> : <GroupAdd />}
+              {props.isFollowed ? <GroupAdd style={{ color: "blue" }} /> : <GroupAdd />}
             </IconButton>
           </Tooltip>
-          <MoreHoriz />
+          <IconButton aria-label="more options">
+            <MoreHoriz />
+          </IconButton>
         </Box>
       </Box>
 
