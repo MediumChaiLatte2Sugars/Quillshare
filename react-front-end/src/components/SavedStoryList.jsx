@@ -35,6 +35,31 @@ const SavedStoryList = ({story, author, currentViewer}) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(null);
+  // const [randomImage, setRandomImage] = useState('');
+
+  //  // Fetch a random image from Pexels API
+  //  const fetchRandomImage = async () => {
+  //   try {
+  //     const response = await axios.get('https://api.pexels.com/v1/search', {
+  //       headers: {
+  //         Authorization: process.env.PEXEL_KEY,
+  //       },
+  //       params: {
+  //         query: 'abstract', 
+  //         orientation: 'landscape', // Adjust orientation as needed
+  //         size: 'small', // Adjust size as needed (small, medium, large)
+  //         per_page: 1, // Number of images to retrieve
+  //         page: Math.floor(Math.random() * 10) + 1, // Page number of results
+  //       },
+  //     });
+  //     const photos = response.data.photos;
+  //     if (photos.length > 0) {
+  //       setRandomImage(photos[0].src.large2x);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
 
   const truncateString = (str, maxLength) => {
@@ -104,6 +129,10 @@ const SavedStoryList = ({story, author, currentViewer}) => {
   
     return formattedDate;
   }
+
+  // useEffect(() => {
+  //   fetchRandomImage();
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,13 +208,13 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         {story ? story.title :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
         </Typography>
       
-      {story && story.image ? <CardMedia 
+      {/* {story && randomImage ? <CardMedia 
         component="img"
         sx={{ width: 100 , height: 100 , ml:2}}
         
-        image="https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c"
+        image={randomImage}
         alt="Paella dish"
-      /> : <Skeleton variant="rectangular" height={100} width={100} />}
+      /> : <Skeleton variant="rectangular" height={100} width={100} />} */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
         {story ? truncateString(html2plaintext(story.content), 200) :  <Skeleton variant="text" sx={{ fontSize: '2rem' }} animation="wave" />}
