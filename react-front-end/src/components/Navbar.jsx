@@ -239,7 +239,7 @@ function ResponsiveAppBar() {
             <CircleNotifications />
           </Badge>
           
-          {isAuthenticated ? <Typography variant="h6">
+          {isAuthenticated ? <Typography variant="h6" sx={{mr: 1}}>
             {userObject ? userObject.username.split(" ")[0] : user.name}
           </Typography>: 
           
