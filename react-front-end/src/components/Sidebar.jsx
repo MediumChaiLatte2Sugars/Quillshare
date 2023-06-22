@@ -97,14 +97,14 @@ import {
             </ListItem>
 
 
-            <ListItem disablePadding>
+            {/* <ListItem disablePadding>
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
                   <ModeNight />
                 </ListItemIcon>
                 <Switch onChange={e=>setMode(mode === "light" ? "dark" : "light")}/>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
 
 
           </List>
