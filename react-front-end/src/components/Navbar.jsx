@@ -232,7 +232,7 @@ function ResponsiveAppBar() {
           <Badge color="error">
             <BorderColor />
            </Badge>
-          <Typography variant="h6">
+          <Typography variant="h6" sx={{ml: -2}}>
           <Link style={{textDecoration: "none", color:"white"}} to="/createstory">Create </Link>
           </Typography>
           <Badge color="error">
