@@ -25,8 +25,6 @@ const HomePage = () => {
            
            <Box flex={4} p={{ xs: 0, md: 2 }}>
 
-            <h2> Story Of QuillShare...</h2>
-
             <React.Fragment>
       <CssBaseline />
       <Container>
@@ -78,7 +76,7 @@ const HomePage = () => {
         </Typography>
 
          </Box>
-         <Button variant="contained" size="small" >
+         <Button variant="contained" size="small" sx={{mt: 2}}>
           Let's Join the Community
         </Button>
       </Container>

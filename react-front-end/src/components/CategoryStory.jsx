@@ -71,7 +71,7 @@ const CategoryStory = () => {
       
     }
 
-  }, [isAuthenticated, userObject]);
+  }, [isAuthenticated]);
 
   setTimeout(() => {
     setLoading(false);

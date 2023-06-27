@@ -5,6 +5,7 @@ import axios from "axios";
 import { Drawer, Box, CircularProgress } from "@mui/material";
 import { useAuth0 } from '@auth0/auth0-react';
 import { EditorState, convertFromRaw } from 'draft-js';
+import { useNavigate } from "react-router-dom";
 
 const extractEditorState = (content) => {
   // Convert the editorState back to an object
@@ -22,6 +23,7 @@ export default function EditStoryForm(props) {
   const [drawer, setDrawer] = useState(false);
   const [story, setStory] = useState(null);
   const [author, setAuthor] = useState(null);
+  const navigate = useNavigate();
   
   useEffect(() => {
     async function fetchData(){
@@ -72,6 +74,9 @@ export default function EditStoryForm(props) {
       // Handle the response as needed
       console.log(response.data);
       alert("Story submitted successfully!");
+
+      // Redirect to stories page
+      navigate("/user/stories/published");
     } catch (error) {
       // Handle errors
       console.error(error);
