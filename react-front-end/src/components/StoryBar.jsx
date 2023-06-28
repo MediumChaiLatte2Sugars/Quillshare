@@ -40,7 +40,6 @@ export default function StoryBar({story, author, user, link}) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [openComments, setOpenComments] = useState(false);
 
   const handleBookmark = async () => {
