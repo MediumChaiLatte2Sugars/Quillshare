@@ -36,7 +36,7 @@ const formatDate = (date) => {
 };
 
 
-export default function StoryBar({story, author, user, link, isScrollable}) {
+export default function StoryBar({story, author, user, link}) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -136,18 +136,13 @@ export default function StoryBar({story, author, user, link, isScrollable}) {
   }, [isLiked])
 
 
-  // useEffect(() => {
-  //   console.log("changing");
-    
-  // }, [isScrollable]);
-
   const trigger = useScrollTrigger({
     threshold: 100, // Adjust the threshold value as per your requirement
   });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <StyledAppBar position="fixed" scrolled={trigger} isScrollable={isScrollable}>
+      <StyledAppBar position="fixed" scrolled={trigger}>
         <StyledToolbar>
           {/* <IconButton
             size="large"
