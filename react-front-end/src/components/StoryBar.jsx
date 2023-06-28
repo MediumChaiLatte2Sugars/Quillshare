@@ -8,14 +8,13 @@ import { Favorite, FavoriteBorder, LibraryAdd, ModeComment } from "@mui/icons-ma
 import axios from 'axios';
 import ShareButton from './StoryLinkShare'; 
 import StoryComments from './StoryComments';
-import CommentForm from './form/CommentForm';
 
 
-const StyledAppBar = styled(AppBar)(({ theme, scrolled }) => ({
+const StyledAppBar = styled(AppBar)(({ theme, scrolled, isScrollable }) => ({
   transition: 'height 0.5s',
   position: 'fixed', // Add relative positioning
   top: scrolled ? 'auto' : '100%', // Set the top position to auto when scrolled and 100% when not scrolled
-  transform: scrolled ? 'none' : 'translateY(100%)', // Add a transform to translate the bar below
+  transform: scrolled ? 'none' : 'translateY(100%)', // Add condition to apply transform only when scrollable
   height: theme.spacing(6),
 }));
 
@@ -25,11 +24,22 @@ const StyledToolbar = styled(Toolbar)({
   justifyContent: 'space-between',
 });
 
+const formatDate = (date) => {
+  const dateObject = new Date(date);
+  const formattedDate = dateObject.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return formattedDate;
+};
+
+
 export default function StoryBar({story, author, user, link}) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [openComments, setOpenComments] = useState(false);
 
   const handleBookmark = async () => {
@@ -124,6 +134,7 @@ export default function StoryBar({story, author, user, link}) {
     return () => {};
   }, [isLiked])
 
+
   const trigger = useScrollTrigger({
     threshold: 100, // Adjust the threshold value as per your requirement
   });
@@ -177,7 +188,7 @@ export default function StoryBar({story, author, user, link}) {
             </IconButton>
           </Tooltip>
           
-          <StoryComments open={openComments} onClose={handleCloseComments} children={<CommentForm story={story.id} user={user.id}/>}/>
+          <StoryComments open={openComments} onClose={handleCloseComments} story={story} author={author} user={user} />
 
           <Tooltip title="Share Story">
             <div>

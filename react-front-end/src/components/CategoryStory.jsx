@@ -120,7 +120,7 @@ const CategoryStory = () => {
                         created_at: updatedStory.created_at,
                         title: updatedStory.title,
                         content: updatedStory.content,
-                        id: updatedStory.id,
+                        id: updatedStory.story_id,
                         unique_id: updatedStory.unique_id,
                       }}
                     />
