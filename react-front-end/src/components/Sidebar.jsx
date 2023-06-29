@@ -95,11 +95,11 @@ const Sidebar = ({ mode, setMode }) => {
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/user/stories/published">
+            <ListItemButton component={Link} to="/user/stories/created">
               <ListItemIcon>
                 <Settings />
               </ListItemIcon>
-              <ListItemText primary="Published Stories" />
+              <ListItemText primary="Created Stories" />
             </ListItemButton>
           </ListItem>
 

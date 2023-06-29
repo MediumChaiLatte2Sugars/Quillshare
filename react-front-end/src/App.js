@@ -14,7 +14,7 @@ import Profile from "./components/Profile";
 import SingleStory from "./components/SingleStory";
 import EditStory from "./components/EditStory";
 import NonUserProfile from "./components/NonUserProfile";
-import UserPublishedStories from "./components/UserPublishedStories";
+import UserCreatedStories from "./components/UserCreatedStories";
 import UserSavedStories from "./components/UserSavedStories";
 
 import { DarkModeProvider } from "./components/DarkModeContext";
@@ -47,8 +47,8 @@ class App extends Component {
             <Route path="/edit/:uniqueId" element={<EditStory />} />
             <Route path="/user/:id" element={<NonUserProfile />} />
             <Route
-              path="/user/stories/published"
-              element={<UserPublishedStories />}
+              path="/user/stories/created"
+              element={<UserCreatedStories />}
             />
             <Route path="/user/stories/saved" element={<UserSavedStories />} />
           </Routes>

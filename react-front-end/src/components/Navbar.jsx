@@ -282,7 +282,7 @@ function ResponsiveAppBar() {
               </Badge>
               </MenuItem>
               <MenuItem component={Link} to="/user/stories/saved">Saved Stories</MenuItem>
-              <MenuItem component={Link} to="/user/stories/published">Stories</MenuItem>
+              <MenuItem component={Link} to="/user/stories/created">Stories</MenuItem>
               <MenuItem onClick={() => logout({ returnTo: `${window.location.protocol}//${window.location.host}/homepage` })}>Logout</MenuItem>
              </Menu>
           </Box>}

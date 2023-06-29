@@ -20,7 +20,7 @@ const convertStoryToRaw = (content) => {
   return contentWithFormatting;
 }
 
-const UserPublishedStories = () => {
+const UserCreatedStories = () => {
   const [userObject, setUserObject] = useState(null);
   const [userStories, setUserStories] = useState(null);
   const { isAuthenticated, user } = useAuth0();
@@ -80,7 +80,7 @@ const UserPublishedStories = () => {
           <Stack direction="row" spacing={2} justifyContent="space-between">
             <Sidebar setMode={setMode} mode={mode}/>
             <Box flex={4} p={{ xs: 0, md: 2 }}>
-             <h2> My Published Stories </h2>
+             <h2> My Created Stories </h2>
               {/* User's stories will go here: */}
               {userStories ? (
                 userStories.map((story) => {
@@ -115,4 +115,4 @@ const UserPublishedStories = () => {
     );
   };
   
-  export default UserPublishedStories;
+  export default UserCreatedStories;

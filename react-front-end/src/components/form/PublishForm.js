@@ -33,7 +33,7 @@ export const PublishForm = (props) => {
       createStoryFormValues.save ? alert("Story saved successfully!") : alert("Story submitted successfully!");
 
       // Redirect to a stories page
-      // navigate("/user/stories/published");
+      navigate("/user/stories/created");
     } catch (error) {
       // Handle errors
       console.error(error);
