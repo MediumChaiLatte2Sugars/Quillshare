@@ -94,37 +94,38 @@ router.put("/:id", (req, res) => {
 // POST a new story -----   /api/stories
 router.post("/", async (req, res) => {
   try {
+
     const props = {...req.body, unique_id: uuidv4()};
     console.log(props);
-
+    
     // Extract tags from props
-    const tags = props.tags.split(" ");
-
+    const tags = 'tags' in props ? props.tags.split(" ") : [];
+    
     // Assemble required data for Story db creation
     const storyData = {
       user_id: props.user_id, 
-      category_id: props.category,
+      category_id: 'category' in props ? props.category : 19, // ID 19 for undecided
       title: props.title,
       content: JSON.stringify(props.editorState),
-      status: "published",
+      status: props.save ? "draft" : "published",
       type: props.visibility,
       unique_id: props.unique_id,
     };
-
+    
     console.log(storyData);
 
     // Create story
     const story = await Stories.create(storyData);
 
-    // Associate story to category
-    const params = {
-      story_id: story[0].id,
-      category_id: story[0].category_id,
-    };
-
-    console.log("story: ", story);
-
-    await StoryCategories.create(params);
+    if (storyData.category_id){
+      // Associate story to category
+      const params = {
+        story_id: story[0].id,
+        category_id: story[0].category_id,
+      };
+  
+      await StoryCategories.create(params);
+    }
 
     // Associate story to tags
     for (let tag of tags) {
@@ -134,8 +135,9 @@ router.post("/", async (req, res) => {
     res.json({
       ok: true,
       message: "Story created",
-      story,
+      props,
     });
+
   } catch (err) {
     console.log("err:", err);
     res.status(500).json({
