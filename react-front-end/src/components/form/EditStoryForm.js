@@ -40,7 +40,7 @@ export default function EditStoryForm(props) {
     fetchData();
   }, []);
   useEffect(() => {
-    if (publishSettingsFormValues && createStoryFormValues && props.user.id) {
+    if (publishSettingsFormValues && createStoryFormValues && props.user.id || props.user.id && createStoryFormValues) {
       handleSubmit();
     }
   }, [publishSettingsFormValues, createStoryFormValues, props.user]);
@@ -73,10 +73,10 @@ export default function EditStoryForm(props) {
 
       // Handle the response as needed
       console.log(response.data);
-      alert("Story submitted successfully!");
+      createStoryFormValues.save ? alert("Story saved successfully!") : alert("Story submitted successfully!");
 
       // Redirect to stories page
-      navigate("/user/stories/published");
+      navigate("/user/stories/created");
     } catch (error) {
       // Handle errors
       console.error(error);
@@ -100,7 +100,11 @@ export default function EditStoryForm(props) {
               <CreateStoryForm
                 onSubmit={(values) => {
                   setCreateStoryFormValues(values);
-                  setDrawer(true);
+
+                  // Dont show the publish settings form if saving
+                  if (!values.save){
+                    setDrawer(true);
+                  }
                 }}
                 editorState={extractEditorState(story.content)}
                 title={story.title}

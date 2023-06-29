@@ -77,7 +77,7 @@ router.get("/:id/likes", (req, res) => {
 router.put("/:id", (req, res) => {
   const storyId = req.params.id;
   const props = req.body;
-  const { category, tags, editorState, visibility, ...rest } = props;
+  const { category, tags, editorState, visibility, save, ...rest } = props;
   const modifiedProps = { category_id: category, content: JSON.stringify(editorState), type: visibility, ...rest };
   console.log("Modded Props: ", modifiedProps);
   console.log("Req.body: ", req.body);
