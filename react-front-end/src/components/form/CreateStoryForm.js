@@ -18,7 +18,7 @@ const editorRequired = (editorState) => {
 export const CreateStoryForm = (props) => {
 
     // Function to handle form submission
-    const handleSubmit = (values) => {
+    const handleSubmit = (values, save) => {
       const contentState = values.editorState.getCurrentContent();
       const rawContentState = convertToRaw(contentState);
   
@@ -26,11 +26,17 @@ export const CreateStoryForm = (props) => {
        const updatedValues = {
         ...values,
         editorState: rawContentState,
+        save: save,
       };
   
       // Call the onSubmit prop to continue with the form submission
       props.onSubmit(updatedValues);
     };
+
+    // Function to handle saving
+    const handleSave = (values) => {
+      handleSubmit(values, true);
+    }
 
   return (
     <Formik
@@ -70,7 +76,7 @@ export const CreateStoryForm = (props) => {
             <ErrorMessage name="editorState" />
           </Box>
           <Box component="div" style={{textAlign: 'right'}}>
-            <button type="button" style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: 'transparent', padding: '5px 15px', borderRadius: 4, color: '#1976d2'}}>Save</button>
+            <button type="button" onClick={() => handleSave(values)} style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: 'transparent', padding: '5px 15px', borderRadius: 4, color: '#1976d2'}}>Save</button>
             <button type="submit" style={{border: '1px solid #1976d2', margin: '10px', backgroundColor: '#1976d2', color: 'white', padding: '5px 15px', borderRadius: 4}}>Publish</button>
           </Box>
         </Form>

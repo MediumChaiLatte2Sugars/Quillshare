@@ -12,7 +12,7 @@ export const PublishForm = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (publishSettingsFormValues && createStoryFormValues && props.user.id) {
+    if (publishSettingsFormValues && createStoryFormValues && props.user.id || props.user.id && createStoryFormValues) {
       handleSubmit();
     }
   }, [publishSettingsFormValues, createStoryFormValues, props.user]);
@@ -29,10 +29,11 @@ export const PublishForm = (props) => {
 
       // Handle the response as needed
       console.log(response.data);
-      alert("Story submitted successfully!");
+      
+      createStoryFormValues.save ? alert("Story saved successfully!") : alert("Story submitted successfully!");
 
       // Redirect to a stories page
-      navigate("/user/stories/published");
+      // navigate("/user/stories/published");
     } catch (error) {
       // Handle errors
       console.error(error);
@@ -54,7 +55,12 @@ export const PublishForm = (props) => {
       <CreateStoryForm
         onSubmit={(values) => {
           setCreateStoryFormValues(values);
-          setDrawer(true);
+          console.log("Create Story Form Values Sub: ", values);
+
+          // Dont show the publish settings form if saving
+          if (!values.save){
+            setDrawer(true);
+          }
         }}
       />
       <Drawer sx={{width: 250}} p={2} anchor='right' open={drawer} onClose={toggleDrawer()}>
