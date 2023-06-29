@@ -221,7 +221,7 @@ const SavedStoryList = ({story, author, currentViewer}) => {
         </Typography>
 
         <Tooltip title={isLiked ? "Unlike Story" : "Like Story"}>
-          <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike}>
+          <IconButton aria-label="like story" onClick={isLiked ? handleUnlike : handleLike} disabled={story.status !==  'published'}>
             {isLiked ? <Checkbox
               icon={<Favorite sx={{ color: "red" }} />}
               checkedIcon={<Favorite sx={{ color: "red" }} />}
@@ -235,32 +235,36 @@ const SavedStoryList = ({story, author, currentViewer}) => {
           <IconButton 
             aria-label="LibraryAdd" 
             onClick={isBookmarked ? handleUnbookmark : handleBookmark}
+            disabled={story.status !==  'published'}
           >
-             {isBookmarked ? 
+            {isBookmarked ? 
             <LibraryAdd style={{ color: '#badb82' }}/> : <LibraryAdd />}
           </IconButton> 
         </Tooltip>
-        <IconButton aria-label="ModeComment">
+        <IconButton aria-label="ModeComment" disabled={story.status !==  'published'}>
           <ModeComment />
         </IconButton>
         {/* <IconButton aria-label="share">
           <Share />
         </IconButton> */}
-        <Tooltip title="Share Story">
+        <Tooltip title="Share Story" disabled={story.status !==  'published'}>
             <span>
-              <ShareButton link={`${window.location.protocol}//${window.location.host}/story/id/${story.unique_id}`}/>
+             {story.status === 'published' && <ShareButton link={`${window.location.protocol}//${window.location.host}/story/id/${story.unique_id}`}/>} 
             </span>
         </Tooltip>
         
      
 
-        { story ? <Link to={`/story/${story.unique_id}`} style={{ textDecoration: 'none' }}>
+        { story && story.status === 'published' ? <Link to={`/story/${story.unique_id}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" size="small">
             Let's Read
           </Button>
-        </Link>: <Button variant="contained" size="small" disabled={true}>
-        <CircularProgress size={20} color="inherit" /> Let's Read
+        </Link>: 
+          <Button variant="contained" size="small" disabled={true}>
+            Let's Read
           </Button>}
+
+
           { story && currentViewer && user && currentViewer === user.id && <Link to={`/edit/${story.unique_id}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" size="small" sx={{ml: 2}}>
             Edit
