@@ -101,6 +101,7 @@ const Feed = () => {
                         content: updatedStory.content,
                         id: updatedStory.id,
                         unique_id: updatedStory.unique_id,
+                        status: updatedStory.status,
                       }}
                     />
                   );

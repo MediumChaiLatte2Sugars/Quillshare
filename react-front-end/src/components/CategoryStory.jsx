@@ -122,6 +122,7 @@ const CategoryStory = () => {
                         content: updatedStory.content,
                         id: updatedStory.story_id,
                         unique_id: updatedStory.unique_id,
+                        status: updatedStory.status,
                       }}
                     />
                   );
