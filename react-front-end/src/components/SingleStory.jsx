@@ -73,7 +73,7 @@ const SingleStory = () => {
       return setUserObject(null);
     }
 
-  }, [isAuthenticated, userObject]);
+  }, [isAuthenticated]);
 
   const darkTheme = createTheme({
     palette: {
