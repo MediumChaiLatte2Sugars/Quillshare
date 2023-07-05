@@ -30,7 +30,7 @@ const Explore = () => {
 
      <h2>Popular Categories</h2>
      <Grid container spacing={1}>
-      <Grid item xs={12} sm={4} component={Link} to="/category/16" >
+      <Grid item xs={12} sm={4} component={Link} to="/category/15" >
         <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', p: 2 }}>
           Adventure
         </Box>
