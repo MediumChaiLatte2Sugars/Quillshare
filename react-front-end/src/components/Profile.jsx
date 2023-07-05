@@ -65,7 +65,7 @@ const Profile = (props) => {
             if (userObject){
 
               if (!userStories){
-                const getStories = await axios.get(`/api/users/${props.otherUser.id}/stories`)
+                const getStories = await axios.get(`/api/users/${props.otherUser.id}/stories`, { params: { published: true }})
                 console.log("Getting stories: ", getStories); 
                 return setUserStories(getStories.data);
 
@@ -98,7 +98,7 @@ const Profile = (props) => {
               if (userObject){
   
                 if (!userStories){
-                  const getStories = await axios.get(`/api/users/${userObject.id}/stories`)
+                  const getStories = await axios.get(`/api/users/${userObject.id}/stories`, { params: { published: true }})
                   console.log("Getting stories: ", getStories); 
                   return setUserStories(getStories.data);
   
