@@ -139,11 +139,26 @@ router.get("/:id/feeds", async (req, res) => {
  */
 router.get("/:id/stories", (req, res) => {
   const userId = req.params.id;
-  Stories.find({ user_id: userId })
-    .then((stories) => {
-      res.send(stories);
+  if ('published' in req.query){
+
+    Stories.find({ 
+      user_id: userId,
+      status: 'published'
     })
-    .catch((err) => console.log("err:", err));
+      .then((stories) => {
+        res.send(stories);
+      })
+      .catch((err) => console.log("err:", err));
+
+  } else {
+    
+    Stories.find({ user_id: userId })
+      .then((stories) => {
+        res.send(stories);
+      })
+      .catch((err) => console.log("err:", err));
+    
+  }
 });
 
 router.get("/:id/followers", (req, res) => {
